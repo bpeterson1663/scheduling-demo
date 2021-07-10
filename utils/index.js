@@ -16,6 +16,15 @@ const shifsOverlapQuery = (startTime, endTime) => (
         ]
       }
 )
+
+const generateErrorResponse = (res, status, errorMessage) => (
+  res.status(status).json({
+      success: false,
+      error: errorMessage
+  })
+)
+
 module.exports = {
     shifsOverlapQuery,
+    generateErrorResponse
 }
