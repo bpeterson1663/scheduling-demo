@@ -51,7 +51,16 @@ const createShift = (req, res) => {
 }
 
 const getAllShifts = (req, res) => {
-    Shift.find({}, (error, shifts) => {
+    const startQuery = parseInt(req.query.start)
+    const endQuery = parseInt(req.query.end)
+    const conditions = []
+
+    if(startQuery) conditions.push({ startTime: {$gte: startQuery} })
+    if(endQuery) conditions.push({ endTime: {$lte: endQuery} })
+
+    const searchCondition = conditions.length > 0 ? { $and: conditions } : {} 
+
+    Shift.find(searchCondition, (error, shifts) => {
         if(error) {
             return res.status(400).json({
                 success: false,
