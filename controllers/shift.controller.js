@@ -8,20 +8,46 @@ const createShift = (req, res) => {
         })
     }
     const shift = new Shift(req.body)
-    shift
-      .save()
-      .then(() => {
-          return res.status(201).json({
-              success: true,
-              id: shift._id
-          })
-      })
-      .catch(error => {
-          return res.status(400).json({
-              success: false,
-              error
-          })
-      })
+    //Check if shift overlaps with existing shift
+    Shift.find({
+      $or: [
+        { 
+          $and: [
+            { startTime: { $lte: req.body.startTime } },
+            { endTime: { $gte: req.body.startTime } }
+          ]
+        },
+        { 
+          $and: [
+            { startTime: { $gte: req.body.endTime } },
+            { endTime: { $lte: req.body.endTime } }
+          ]
+        }
+      ]
+    }).count((err, count) => {
+        //If any count exists, return error
+        if( count ){
+            return res.status(400).json({
+                success: false,
+                error: 'Shift overlaps with an already existing shift'
+            })
+        }else {
+            shift
+            .save()
+            .then(() => {
+                return res.status(201).json({
+                    success: true,
+                    id: shift._id
+                })
+            })
+            .catch(error => {
+                return res.status(400).json({
+                    success: false,
+                    error
+                })
+            })
+        }
+    })
 }
 
 const getAllShifts = (req, res) => {
