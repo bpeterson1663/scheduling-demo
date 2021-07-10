@@ -3,7 +3,7 @@ const app = express()
 const db = require('./db')
 const ShiftRouter = require('./routers/shift.router')
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
