@@ -1,72 +1,48 @@
 const Shift = require('../models/Shift')
+const { shifsOverlapQuery, generateErrorResponse } = require('../utils')
+const { requestBodyInvalid, shiftOvelapsError } = require('../i18n')
 
 const createShift = (req, res) => {
-    if(!req.body) {
-        return res.status(400).json({
-            success: false,
-            error: 'Request body is invalid for shift'
-        })
-    }
-    const shift = new Shift(req.body)
-    //Check if shift overlaps with existing shift
-    Shift.find({
-      $or: [
-        { 
-          $and: [
-            { startTime: { $lte: req.body.startTime } },
-            { endTime: { $gte: req.body.startTime } }
-          ]
-        },
-        { 
-          $and: [
-            { startTime: { $gte: req.body.endTime } },
-            { endTime: { $lte: req.body.endTime } }
-          ]
-        }
-      ]
-    }).count((err, count) => {
+    if(!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
+
+    const { startTime, endTime } = req.body
+    const conditionCheck = shifsOverlapQuery(startTime, endTime)
+    
+    Shift.find(conditionCheck).count((err, count) => {
+        if(err) return gerenateErrorResponse(res, 400, err.message)
         //If any count exists, return error
-        if( count ){
-            return res.status(400).json({
-                success: false,
-                error: 'Shift overlaps with an already existing shift'
-            })
-        }else {
+        if( count ) {
+            return generateErrorResponse(res, 400, shiftOvelapsError)
+        } else {
+            const shift = new Shift(req.body)
+
             shift
-            .save()
-            .then(() => {
-                return res.status(201).json({
-                    success: true,
-                    id: shift._id
+                .save()
+                .then(() => {
+                    return res.status(201).json({
+                        success: true,
+                        id: shift._id
+                    })
                 })
-            })
-            .catch(error => {
-                return res.status(400).json({
-                    success: false,
-                    error
+                .catch(error => {
+                    return generateErrorResponse(res, 400, error.message)
                 })
-            })
         }
     })
 }
 
 const getAllShifts = (req, res) => {
-    const startQuery = parseInt(req.query.start)
-    const endQuery = parseInt(req.query.end)
+    const { start, end } = req.query
     const conditions = []
 
-    if(startQuery) conditions.push({ startTime: {$gte: startQuery} })
-    if(endQuery) conditions.push({ endTime: {$lte: endQuery} })
+    if(start) conditions.push({ startTime: { $lte: parseInt(start) } })
+    if(end) conditions.push({ endTime: { $gte: parseInt(end) } })
 
     const searchCondition = conditions.length > 0 ? { $and: conditions } : {} 
 
     Shift.find(searchCondition, (error, shifts) => {
-        if(error) {
-            return res.status(400).json({
-                success: false,
-                error,
-            })
-        }
+        if(error) return generateErrorResponse(res, 400, error.message)
+
         return res.status(200).json({
             success: true,
             shifts
@@ -75,33 +51,31 @@ const getAllShifts = (req, res) => {
 }
 
 const updateShift = (req, res) => {
-    if(!req.body) {
-        return res.status(400).json({
-            success: falase,
-            error: 'Request body is invalid for shift'
-        })
-    }
-    Shift.updateOne({ _id: req.params.id}, req.body, (error, shift) => {
-        if(error) {
-            return res.status(400).json({
-                success: false,
-                error
+    if(!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
+
+    const { startTime, endTime } = req.body
+    const conditionCheck = shifsOverlapQuery(startTime, endTime)
+    
+    Shift.find(conditionCheck).count((err, count) => {
+        //If count exists, then shift overlaps
+        if( count ){
+            return generateErrorResponse(res, 400, shiftOvelapsError)
+        }else {
+            Shift.updateOne({ _id: req.params.id}, req.body, (error, shift) => {
+                if(error) generateErrorResponse(res, 400, error.message)
+                
+                return res.status(200).json({
+                    success: true
+                })
             })
         }
-        return res.status(200).json({
-            success: true
-        })
     })
 }
 
 const getShiftById = (req, res) => {
     Shift.findById({ _id: req.params.id }, (error, shift) => {
-        if(error) {
-            return res.status(400).json({
-                success: false,
-                error
-            })
-        }
+        if(error) generateErrorResponse(res, 400, error.message)
+        
         return res.status(200).json({
             success: true,
             shift
@@ -111,14 +85,11 @@ const getShiftById = (req, res) => {
 
 const deleteShift = (req, res) => {
     Shift.findOneAndDelete({ _id: req.params.id }, (error, shift) => {
-        if (error) {
-          return res.status(400).json({ 
-              success: false,
-              error
-            })
-        }
+        if (error) generateErrorResponse(res, 400, error.message)
+
         return res.status(200).json({ 
-            suceess: true
+            suceess: true,
+            id: shift.id
         })
     })
 }
