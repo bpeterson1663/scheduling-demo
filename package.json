@@ -11,6 +11,7 @@
     "client": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "start": "node server.js",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|json)\"",
     "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "concurrently": "^6.2.0",
-    "nodemon": "^2.0.10"
+    "nodemon": "^2.0.10",
+    "prettier": "^2.3.2"
   }
 }
