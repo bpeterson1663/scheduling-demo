@@ -1,4 +1,4 @@
-const { userUnathorized } = require('../i18n')
+const { userUnathorized } = require('../../i18n')
 const { generateErrorResponse } = require('../utils')
 
 const withAuth = function (req, res, next) {

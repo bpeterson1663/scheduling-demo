@@ -5,9 +5,9 @@ const session = require('express-session')
 const app = express()
 const db = require('./db')
 const cookieParser = require('cookie-parser')
-const ShiftRouter = require('./routers/shift.router')
-const UserRouter = require('./routers/user.router')
-const passportConfig = require('./middleware/passport-config')
+const ShiftRouter = require('./server/routers/shift.router')
+const UserRouter = require('./server/routers/user.router')
+const passportConfig = require('./server/middleware/passport-config')
 
 const SECRET = process.env.SECRET
 const PORT = process.env.PORT || 4000

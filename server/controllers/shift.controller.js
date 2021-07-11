@@ -1,6 +1,6 @@
 const Shift = require('../models/Shift')
 const { shifsOverlapQuery, generateErrorResponse } = require('../utils')
-const { requestBodyInvalid, shiftOvelapsError } = require('../i18n')
+const { requestBodyInvalid, shiftOvelapsError } = require('../../i18n')
 
 const createShift = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)

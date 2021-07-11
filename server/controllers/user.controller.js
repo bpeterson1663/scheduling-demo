@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const passport = require('passport')
 const { generateErrorResponse } = require('../utils')
-const { loggedIn, loggedOut, userUnathorized } = require('../i18n')
+const { loggedIn, loggedOut, userUnathorized } = require('../../i18n')
 
 const registerAndSignIn = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
