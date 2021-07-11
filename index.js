@@ -4,6 +4,7 @@ const passport = require('passport')
 const session = require('express-session')
 const app = express()
 const db = require('./db')
+const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const ShiftRouter = require('./server/routers/shift.router')
 const UserRouter = require('./server/routers/user.router')
@@ -13,6 +14,12 @@ const SECRET = process.env.SECRET
 const PORT = process.env.PORT || 4000
 
 app.use(express.json())
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // <-- location of the react app for development
+    credentials: true,
+  }),
+)
 app.use(
   session({
     secret: SECRET,

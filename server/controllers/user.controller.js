@@ -26,7 +26,10 @@ const authenticateUser = (req, res, next) => {
     else {
       req.logIn(user, (err) => {
         if (err) return generateErrorResponse(res, 401, err)
-        res.status(201).json({ userId: user.id, success: true, message: loggedIn })
+        const { email, _id, firstName, lastName, businessName, role } = user
+        res
+          .status(201)
+          .json({ user: { _id, email, firstName, lastName, businessName, role }, success: true, message: loggedIn })
       })
     }
   })(req, res, next)
