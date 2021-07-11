@@ -8,7 +8,10 @@
   },
   "scripts": {
     "server": "nodemon server.js",
-    "start": "node server.js"
+    "client": "cd client && yarn start",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
@@ -17,6 +20,8 @@
     "mongoose": "^5.13.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "concurrently": "^6.2.0",
     "nodemon": "^2.0.10"
   }
 }
