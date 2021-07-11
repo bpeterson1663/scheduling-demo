@@ -32,7 +32,7 @@ module.exports = function (passport) {
       } else {
         const { _id, email, role, firstName, lastName, businessName } = user
         const userInformation = {
-          _id,
+          _id: String(_id),
           email,
           role,
           firstName,
