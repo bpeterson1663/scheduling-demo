@@ -30,7 +30,7 @@ DELETE http://localhost:4000/api/shift/60e9084317555b787bfb2d6e
 
 ###
 
-POST http://localhost:4000/api/user
+POST http://localhost:4000/api/register
 Content-Type:  application/json
 
 {
@@ -47,7 +47,7 @@ POST http://localhost:4000/api/login
 Content-Type: application/json
 
 {
-    "email": "bpeterson1663@gmail.com",
+    "email": "bpeterson1661@gmail.com",
 }
 
 ###
@@ -57,3 +57,34 @@ GET http://localhost:4000/api/authorized
 ###
 
 DELETE http://localhost:4000/api/logout
+
+###
+
+POST http://localhost:4000/api/user
+Content-Type: application/json
+
+{
+    "email": "bpeterson1661@gmail.com",
+    "firstName": "Brady",
+    "lastName": "Peterson",
+    "role": "employee"
+}
+
+###
+
+GET http://localhost:4000/api/users
+
+###
+
+GET http://localhost:4000/api/user/60eb38ac2d0a6b1dab5c84ab
+
+### 
+DELETE http://localhost:4000/api/user/60eb38ac2d0a6b1dab5c84ab
+
+###
+PUT http://localhost:4000/api/user/60eb38ac2d0ddb1dab5c84ab
+Content-Type: application/json
+
+{
+  "firstName": "Brady"
+}
