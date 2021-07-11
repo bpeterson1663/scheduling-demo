@@ -1,16 +1,16 @@
 {
   "name": "scheduling-demo",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "license": "MIT",
   "engines": {
     "node": "14.15.3"
   },
   "scripts": {
-    "server": "nodemon server.js",
+    "server": "nodemon index.js",
     "client": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "node server.js",
+    "start": "node index.js",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\"",
     "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build"
   },
