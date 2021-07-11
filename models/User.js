@@ -9,8 +9,8 @@ const User = new Schema({
   password: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  role: { type: String, required: true },
-  businessName: { type: String, required: true },
+  role: { type: String, enum: ['administrator', 'employee'], required: true },
+  businessName: { type: String, required: true, immutable: true },
 })
 
 User.pre('save', function (next) {

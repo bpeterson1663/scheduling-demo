@@ -1,13 +1,13 @@
 const User = require('../models/User')
 const passport = require('passport')
 const { generateErrorResponse } = require('../utils')
-const { loggedIn, loggedOut } = require('../i18n')
+const { loggedIn, loggedOut, userUnathorized } = require('../i18n')
 
-const createUser = (req, res) => {
+const registerAndSignIn = (req, res) => {
+  if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
   const user = new User(req.body)
 
-  user
-    .save()
+  user.save()
     .then(() => {
       req.logIn(user, (err) => {
         if (err) generateErrorResponse(res, 401, err)
@@ -49,9 +49,86 @@ const checkAuth = (req, res) => {
     })
   }
 }
+
+const createUser = (req, res) => {
+  if(req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
+  if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
+  
+  const { businessName } = req.user
+  const user = new User({...req.body, businessName})
+
+  user.save()
+    .then(() => {
+        return res.status(201).json({
+            success: true,
+            id: user._id
+        })
+    })
+    .catch((error) => {
+      return generateErrorResponse(res, 400, error.message)
+    })
+  }
+
+const getAllUsers = (req, res) => {
+  if(req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
+  
+  User.find({ businessName: req.user.businessName }, (error, users) => {
+    if (error) return generateErrorResponse(res, 400, error.message)
+
+    return res.status(200).json({
+      success: true,
+      users,
+    })
+  })
+}
+
+const deleteUser = (req, res) => {
+  if(req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
+  User.findOneAndDelete({ _id: req.params.id }, (error, user) => {
+    if (error) generateErrorResponse(res, 400, error.message)
+
+    return res.status(200).json({
+      suceess: true,
+      id: user.id,
+    })
+  })
+}
+
+const updateUser = (req, res) => {
+  if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
+  if(req.user.role === 'employee' && req.body._id !== req.user._id) return generateErrorResponse(res, 403, userUnathorized)
+  
+  User.updateOne({ _id: req.params.id }, req.body, (error, user) => {
+    if (error) generateErrorResponse(res, 400, error.message)
+
+    return res.status(200).json({
+      success: true,
+      _id: user._id
+    })
+  })
+}
+
+const getUserById = (req, res) => {
+  if(req.user.role === 'employee' && req.body._id !== req.user._id) return generateErrorResponse(res, 403, userUnathorized)
+
+  User.findById({ _id: req.params.id }, (error, user) => {
+    if (error) generateErrorResponse(res, 400, error.message)
+
+    return res.status(200).json({
+      success: true,
+      user,
+    })
+  })
+} 
+
 module.exports = {
-  createUser,
+  registerAndSignIn,
   authenticateUser,
   logoutUser,
   checkAuth,
+  createUser,
+  getAllUsers,
+  deleteUser,
+  updateUser,
+  getUserById
 }
