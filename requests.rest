@@ -26,4 +26,34 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:4000/api/shift/60e7c7da29bad16e10420f9f
+DELETE http://localhost:4000/api/shift/60e9084317555b787bfb2d6e
+
+###
+
+POST http://localhost:4000/api/user
+Content-Type:  application/json
+
+{
+    "email": "bpeterson1663@gmail.com",
+   "firstName": "Brady",
+    "lastName": "Peterson",
+    "role": "administrator",
+    "businessName": "Acme Inc"
+}
+
+###
+
+POST http://localhost:4000/api/login
+Content-Type: application/json
+
+{
+    "email": "bpeterson1663@gmail.com",
+}
+
+###
+
+GET http://localhost:4000/api/authorized
+
+###
+
+DELETE http://localhost:4000/api/logout

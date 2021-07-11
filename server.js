@@ -1,18 +1,38 @@
 const express = require('express')
 const path = require('path')
+const passport = require('passport')
+const session = require('express-session')
 const app = express()
 const db = require('./db')
+const cookieParser = require('cookie-parser')
 const ShiftRouter = require('./routers/shift.router')
+const UserRouter = require('./routers/user.router')
+const passportConfig = require('./middleware/passport-config')
 
+const SECRET = process.env.SECRET
 const PORT = process.env.PORT || 4000
+
+app.use(express.json())
+app.use(
+  session({
+    secret: SECRET,
+    resave: true,
+    saveUninitialized: true,
+  }),
+)
+app.use(cookieParser(SECRET))
+app.use(passport.initialize())
+app.use(passport.session())
+
+passportConfig(passport)
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
-app.use(express.json())
 app.use('/api', ShiftRouter)
+app.use('/api', UserRouter)
 app.use(express.static(path.join(__dirname, 'client/dist')))
-
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
 })
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
