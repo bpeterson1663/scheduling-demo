@@ -1,30 +1,21 @@
-const shifsOverlapQuery = (startTime, endTime) => (
+const shifsOverlapQuery = (startTime, endTime) => ({
+  $or: [
     {
-        $or: [
-          { 
-            $and: [
-              { startTime: { $lte: startTime } },
-              { endTime: { $gte: startTime } }
-            ]
-          },
-          { 
-            $and: [
-              { startTime: { $gte: endTime } },
-              { endTime: { $lte: endTime } }
-            ]
-          }
-        ]
-      }
-)
+      $and: [{ startTime: { $lte: startTime } }, { endTime: { $gte: startTime } }],
+    },
+    {
+      $and: [{ startTime: { $gte: endTime } }, { endTime: { $lte: endTime } }],
+    },
+  ],
+})
 
-const generateErrorResponse = (res, status, errorMessage) => (
+const generateErrorResponse = (res, status, errorMessage) =>
   res.status(status).json({
-      success: false,
-      error: errorMessage
+    success: false,
+    error: errorMessage,
   })
-)
 
 module.exports = {
-    shifsOverlapQuery,
-    generateErrorResponse
+  shifsOverlapQuery,
+  generateErrorResponse,
 }
