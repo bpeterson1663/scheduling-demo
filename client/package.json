@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "webpack serve --mode development",
-    "build": "webpack -p"
+    "build": "webpack --mode production"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
