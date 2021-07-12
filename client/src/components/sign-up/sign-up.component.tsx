@@ -81,7 +81,7 @@ const SignUp: React.FC<SignUpProps> = ({ signUp }): JSX.Element => {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <input type="submit" value="Sign In" />
+        <input type="submit" value="Sign Up" />
       </form>
     </div>
   )
