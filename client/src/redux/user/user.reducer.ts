@@ -4,7 +4,7 @@ import { InitialUserState } from '../../types'
 
 const INITIAL_STATE: InitialUserState = {
   currentUser: null,
-  error: null,
+  message: null,
   fetchStatus: 'idle',
 }
 

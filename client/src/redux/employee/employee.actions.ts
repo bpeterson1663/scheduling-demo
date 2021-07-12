@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import EmployeeActionTypes from './employee.types'
-import { EmployeeT, UserT, ErrorT } from '../../types'
+import { EmployeeT, UserT, MessageT } from '../../types'
 import { createEmployee, getAllEmployees } from '../../api'
 const fetchEmployeeStart = () => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_START,
@@ -11,7 +11,7 @@ const fetchCreateSuccess = (employee: UserT) => ({
   payload: employee,
 })
 
-const fetchEmployeeFailure = (errorMessage: ErrorT) => ({
+const fetchEmployeeFailure = (errorMessage: MessageT) => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE,
   payload: errorMessage,
 })

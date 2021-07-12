@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import UserActionTypes from './user.types'
 import { signIn, checkAuth, signUp } from '../../api'
-import { ErrorT, SignInT, SignUpT, UserT } from '../../types'
+import { MessageT, SignInT, SignUpT, UserT } from '../../types'
 import { signOut } from '../../api'
 
 const fetchAuthStart = () => ({
@@ -17,7 +17,7 @@ const fetchSignOutSuccess = () => ({
   type: UserActionTypes.SIGN_OUT_SUCCESS,
 })
 
-const fetchAuthError = (errorMessage: ErrorT) => ({
+const fetchAuthError = (errorMessage: MessageT) => ({
   type: UserActionTypes.AUTH_FAILURE,
   payload: errorMessage,
 })

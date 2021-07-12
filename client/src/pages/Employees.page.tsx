@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import NewEmployee from '../components/new-employee/new-employee.component'
 import EmployeeList from '../components/employee-list/employee-list.component'
-import { UserT, InitialEmployeeState, FetchStatusT, ErrorT } from '../types'
+import { UserT, InitialEmployeeState, FetchStatusT, MessageT } from '../types'
 import { fetchAllEmployeesStartAsync } from '../redux/employee/employee.actions'
 interface EmployeesT {
   getEmployees: () => void
   employees: UserT[]
   fetchStatus: FetchStatusT
-  error: ErrorT
+  message: MessageT
 }
-const Employees: React.FC<EmployeesT> = ({ employees, getEmployees, fetchStatus, error }) => {
+const Employees: React.FC<EmployeesT> = ({ employees, getEmployees, fetchStatus, message }) => {
   useEffect(() => {
     getEmployees()
   }, [getEmployees])
@@ -20,7 +20,7 @@ const Employees: React.FC<EmployeesT> = ({ employees, getEmployees, fetchStatus,
   return (
     <div>
       <h1>Employees</h1>
-      {fetchStatus === 'error' && <h3>{error}</h3>}
+      {fetchStatus === 'error' && <h3>{message}</h3>}
       <NewEmployee />
       <EmployeeList employees={employees} />
     </div>
@@ -28,11 +28,11 @@ const Employees: React.FC<EmployeesT> = ({ employees, getEmployees, fetchStatus,
 }
 
 const mapStateToProps = ({ employeeReducer }: { employeeReducer: InitialEmployeeState }) => {
-  const { employees, fetchStatus, error } = employeeReducer
+  const { employees, fetchStatus, message } = employeeReducer
   return {
     employees,
     fetchStatus,
-    error,
+    message,
   }
 }
 

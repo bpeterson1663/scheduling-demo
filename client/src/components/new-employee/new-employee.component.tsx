@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { fetchEmployeeCreateStartAsync } from '../../redux/employee/employee.actions'
 import { ROLES } from '../../constants'
-import { EmployeeT, ErrorT, FetchStatusT, InitialEmployeeState, RoleT } from '../../types'
+import { EmployeeT, MessageT, FetchStatusT, InitialEmployeeState, RoleT } from '../../types'
 
 interface NewEmployeeT {
   createEmployee: (payload: EmployeeT) => void
   fetchStatus: FetchStatusT
-  error: ErrorT
+  message: MessageT
 }
-const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, error }): JSX.Element => {
+const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, message }): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -35,8 +35,8 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, erro
   if (fetchStatus === 'loading') return <h3>...Loading</h3>
   return (
     <div>
-      {fetchStatus === 'error' && <h3>{error}</h3>}
-      {fetchStatus === 'success' && <h3>Employee Created Successfully</h3>}
+      {fetchStatus === 'error' && <h3>{message}</h3>}
+      {fetchStatus === 'success' && <h3>{message}</h3>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="firstName">First Name</label>
@@ -104,10 +104,10 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, erro
 }
 
 const mapStateToProps = ({ employeeReducer }: { employeeReducer: InitialEmployeeState }) => {
-  const { fetchStatus, error } = employeeReducer
+  const { fetchStatus, message } = employeeReducer
   return {
     fetchStatus,
-    error,
+    message,
   }
 }
 

@@ -26,16 +26,16 @@ export type FetchStatusT = 'idle' | 'loading' | 'success' | 'error'
 
 export type CurrentUser = UserT | null
 
-export type ErrorT = string | null
+export type MessageT = string | null
 
 export interface InitialUserState {
   currentUser: CurrentUser
   fetchStatus: FetchStatusT
-  error: ErrorT
+  message: MessageT
 }
 
 export interface InitialEmployeeState {
   employees: UserT[]
   fetchStatus: FetchStatusT
-  error: ErrorT
+  message: MessageT
 }
