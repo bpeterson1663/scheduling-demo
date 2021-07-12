@@ -13,7 +13,6 @@ const SignIn: React.FC<SignInProps> = ({ signIn }): JSX.Element => {
   const [password, setPassword] = useState('')
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log('password and email ', { password, email })
     signIn({ password, email })
   }
   return (

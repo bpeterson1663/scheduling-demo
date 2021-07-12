@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
 import SignInSignUp from './pages/SignInAndSignUp.page'
-import { InitialUserState, FetchStatus, CurrentUser } from './types'
+import { InitialUserState, FetchStatusT, CurrentUser } from './types'
 interface AppProps {
   checkAuth: () => void
   currentUser: CurrentUser
-  fetchStatus: FetchStatus
+  fetchStatus: FetchStatusT
 }
 
 const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.Element => {

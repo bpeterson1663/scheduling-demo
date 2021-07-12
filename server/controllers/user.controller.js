@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const passport = require('passport')
 const { generateErrorResponse } = require('../utils')
-const { loggedIn, loggedOut, userUnathorized } = require('../../i18n')
+const { loggedIn, loggedOut, userUnathorized, emailAlreadyExists, businessAlreadyExists, genericSignUpError } = require('../../i18n')
 
 const registerAndSignIn = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
@@ -12,11 +12,18 @@ const registerAndSignIn = (req, res) => {
     .then(() => {
       req.logIn(user, (err) => {
         if (err) generateErrorResponse(res, 401, err)
-        return res.status(201).json({ userId: user._id, success: true, message: loggedIn })
+        const { email, _id, firstName, lastName, businessName, role } = user
+        return res
+          .status(201)
+          .json({ user: { _id, email, firstName, lastName, businessName, role }, success: true, message: loggedIn })
       })
     })
     .catch((error) => {
-      return generateErrorResponse(res, 400, error)
+      let errorMessage = genericSignUpError
+      if(error && error.keyPattern && error.keyPattern.email === 1) errorMessage = emailAlreadyExists
+      if(error && error.keyPattern && error.keyPattern.businessName === 1) errorMessage = businessAlreadyExists
+
+      return generateErrorResponse(res, 400, errorMessage)
     })
 }
 
@@ -49,7 +56,7 @@ const checkAuth = (req, res) => {
   } else {
     return res.status(403).json({
       success: false,
-      error: 'Unathorized',
+      error: null,
     })
   }
 }

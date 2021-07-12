@@ -22,7 +22,7 @@ const userReducer = (state = INITIAL_STATE, action: AnyAction) => {
         currentUser: action.payload,
         error: null,
       }
-    case UserActionTypes.SIGN_IN_FAILURE:
+    case UserActionTypes.AUTH_FAILURE:
       return {
         ...state,
         fetchStatus: 'error',
