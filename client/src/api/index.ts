@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { SignInT, SignUpT } from '../types'
+import { SignInT, SignUpT, EmployeeT } from '../types'
 
 const baseURL = 'https://when-i-work-challenge.herokuapp.com/api'
 
@@ -12,3 +12,5 @@ export const signIn = (payload: SignInT): Promise<AxiosResponse> => api.post('/l
 export const signUp = (payload: SignUpT): Promise<AxiosResponse> => api.post('/register', payload)
 export const signOut = (): Promise<AxiosResponse> => api.delete('/logout')
 export const checkAuth = (): Promise<AxiosResponse> => api.get('/authorized')
+
+export const createEmployee = (payload: EmployeeT): Promise<AxiosResponse> => api.post('/user', payload)

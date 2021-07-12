@@ -3,12 +3,14 @@ export interface SignInT {
   password: string
 }
 
+export type RoleT = 'administrator' | 'employee'
+
 export interface UserT {
   _id: string
   email: string
   firstName: string
   lastName: string
-  role: 'administrator' | 'employee'
+  role: RoleT
   businessName: string
 }
 
@@ -18,6 +20,8 @@ export interface UserExtendT extends UserT {
 
 export type SignUpT = Omit<UserExtendT, '_id'>
 
+export type EmployeeT = Omit<SignUpT, 'businessName'>
+
 export type FetchStatusT = 'idle' | 'loading' | 'success' | 'error'
 
 export type CurrentUser = UserT | null
@@ -26,6 +30,12 @@ export type ErrorT = string | null
 
 export interface InitialUserState {
   currentUser: CurrentUser
+  fetchStatus: FetchStatusT
+  error: ErrorT
+}
+
+export interface InitialEmployeeState {
+  employees: UserT[]
   fetchStatus: FetchStatusT
   error: ErrorT
 }
