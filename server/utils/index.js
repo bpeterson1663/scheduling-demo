@@ -1,10 +1,11 @@
-const shifsOverlapQuery = (startTime, endTime) => ({
+const shifsOverlapQuery = (startTime, endTime, userId) => ({
+  userId: userId,
   $or: [
     {
-      $and: [{ startTime: { $lte: startTime } }, { endTime: { $gte: startTime } }],
+      $and: [{ startTime: { $lte: startTime } }, { endTime: { $gt: startTime } }],
     },
     {
-      $and: [{ startTime: { $gte: endTime } }, { endTime: { $lte: endTime } }],
+      $and: [{ startTime: { $gt: endTime } }, { endTime: { $lte: endTime } }],
     },
   ],
 })

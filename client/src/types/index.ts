@@ -39,3 +39,30 @@ export interface InitialEmployeeState {
   fetchStatus: FetchStatusT
   message: MessageT
 }
+
+export interface NewShiftT {
+  name: string
+  startTime: number
+  endTime: number
+  userId: string
+}
+
+export interface ShiftT extends NewShiftT {
+  _id: string
+}
+
+export interface DisplayShiftT {
+  _id: string
+  fullName: string
+  startDate: string
+  shiftName: string
+  startTime: string
+  endTime: string
+  duration: string
+}
+
+export interface InitialShiftState {
+  shifts: ShiftT[]
+  fetchStatus: FetchStatusT
+  message: MessageT
+}

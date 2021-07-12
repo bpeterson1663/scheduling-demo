@@ -20,7 +20,7 @@ const employeeReducer = (state = INITIAL_STATE, action: AnyAction) => {
         ...state,
         fetchStatus: 'success',
         employees: [...state.employees, action.payload],
-        message: 'Emlpoyee Created Succesfully'
+        message: 'Emlpoyee Created Succesfully',
       }
     case EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE:
       return {

@@ -3,12 +3,15 @@ const { shifsOverlapQuery, generateErrorResponse } = require('../utils')
 const { requestBodyInvalid, shiftOvelapsError } = require('../../i18n')
 
 const createShift = (req, res) => {
+  if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
 
-  const { startTime, endTime } = req.body
-  const conditionCheck = shifsOverlapQuery(startTime, endTime)
+  const { startTime, endTime, userId } = req.body
+  if (!startTime || !endTime || !userId) return generateErrorResponse(res, 400, requestBodyInvalid)
 
-  Shift.find(conditionCheck).count((err, count) => {
+  const conditionCheck = shifsOverlapQuery(startTime, endTime, userId)
+
+  Shift.find(conditionCheck).countDocuments((err, count) => {
     if (err) return gerenateErrorResponse(res, 400, err.message)
     //If any count exists, return error
     if (count) {
@@ -21,7 +24,7 @@ const createShift = (req, res) => {
         .then(() => {
           return res.status(201).json({
             success: true,
-            id: shift._id,
+            shift: shift,
           })
         })
         .catch((error) => {
@@ -56,7 +59,7 @@ const updateShift = (req, res) => {
   const { startTime, endTime } = req.body
   const conditionCheck = shifsOverlapQuery(startTime, endTime)
 
-  Shift.find(conditionCheck).count((err, count) => {
+  Shift.find(conditionCheck).countDocuments((err, count) => {
     //If count exists, then shift overlaps
     if (count) {
       return generateErrorResponse(res, 400, shiftOvelapsError)
