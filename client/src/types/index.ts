@@ -12,3 +12,12 @@ export interface UserT {
   businessName: string
 }
 
+export type FetchStatus = 'idle' | 'loading' | 'success' | 'error'
+
+export type CurrentUser = UserT | null
+
+export interface InitialUserState {
+  currentUser: CurrentUser
+  fetchStatus: FetchStatus
+  error: string | null
+}

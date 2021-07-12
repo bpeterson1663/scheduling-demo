@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { SignInT, UserT } from '../types'
 
 const api = axios.create({
@@ -6,4 +6,5 @@ const api = axios.create({
   baseURL: `http://localhost:4000/api`,
 })
 
-export const signIn = (payload: SignInT): Promise<UserT> => api.post('/login', payload)
+export const signIn = (payload: SignInT): Promise<AxiosResponse> => api.post('/login', payload)
+export const checkAuth = (): Promise<AxiosResponse> => api.get('/authorized')

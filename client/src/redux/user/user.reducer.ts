@@ -1,15 +1,11 @@
 import UserActionTypes from './user.types'
 import { AnyAction } from 'redux'
-import { UserT } from '../../types'
-interface InitialState {
-    currentUser: UserT | null
-    fetchStatus: 'idle' | 'loading' | 'success' | 'error',
-    error: string | null
-}
-const INITIAL_STATE: InitialState = {
+import { InitialUserState } from '../../types'
+
+const INITIAL_STATE: InitialUserState = {
   currentUser: null,
   error: null,
-  fetchStatus: 'idle' 
+  fetchStatus: 'idle',
 }
 
 const userReducer = (state = INITIAL_STATE, action: AnyAction) => {
@@ -19,19 +15,19 @@ const userReducer = (state = INITIAL_STATE, action: AnyAction) => {
         ...state,
         fetchStatus: 'loading',
       }
-    case UserActionTypes.SIGN_IN_SUCCESS: 
+    case UserActionTypes.SIGN_IN_SUCCESS:
       return {
-          ...state,
-          fetchStatus: 'success',
-          currentUser: action.payload,
-          error: null
+        ...state,
+        fetchStatus: 'success',
+        currentUser: action.payload,
+        error: null,
       }
-    case UserActionTypes.SIGN_IN_FAILURE: 
+    case UserActionTypes.SIGN_IN_FAILURE:
       return {
-          ...state,
-          fetchStatus: 'error',
-          currentUser: null,
-          error: action.payload
+        ...state,
+        fetchStatus: 'error',
+        currentUser: null,
+        error: action.payload,
       }
     default:
       return {

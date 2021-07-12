@@ -1,28 +1,42 @@
 import { Dispatch } from 'redux'
 import UserActionTypes from './user.types'
-import { signIn } from '../../api'
+import { signIn, checkAuth } from '../../api'
 import { SignInT, UserT } from '../../types'
-const fetchSignInStart = () => ({
+
+const fetchSignInAuthStart = () => ({
   type: UserActionTypes.SIGN_IN_START,
 })
 
-const fetchSignInSuccess = (user: UserT) => ({
+const fetchSignInAuthSuccess = (user: UserT) => ({
   type: UserActionTypes.SIGN_IN_SUCCESS,
   payload: user,
 })
 
-const fetchSignInError = (errorMessage: string) => ({
+const fetchSignInAuthError = (errorMessage: string) => ({
   type: UserActionTypes.SIGN_IN_FAILURE,
   payload: errorMessage,
 })
 
 export const fetchUserLogInStartAsync = (payload: SignInT) => async (dispatch: Dispatch) => {
-  dispatch(fetchSignInStart())
+  dispatch(fetchSignInAuthStart())
   try {
-    const user = await signIn(payload)
-    dispatch(fetchSignInSuccess(user))
+    const response = await signIn(payload)
+    const { user } = response.data
+    dispatch(fetchSignInAuthSuccess(user))
   } catch (err) {
     let errorMessage = 'Sign In Unsuccessful'
-    dispatch(fetchSignInError(errorMessage))
+    dispatch(fetchSignInAuthError(errorMessage))
+  }
+}
+
+export const fetchAuthStatusStartAsync = () => async (dispatch: Dispatch) => {
+  dispatch(fetchSignInAuthStart())
+  try {
+    const response = await checkAuth()
+    const { user } = response.data
+    dispatch(fetchSignInAuthSuccess(user))
+  } catch (err) {
+    let errorMessage = 'Sign In Unsuccessful'
+    dispatch(fetchSignInAuthError(errorMessage))
   }
 }
