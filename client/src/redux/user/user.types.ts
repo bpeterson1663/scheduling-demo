@@ -1,7 +1,8 @@
 const UserActionTypes = {
   SIGN_IN_START: 'SIGN_IN_START',
   SIGN_IN_SUCCESS: 'SIGN_IN_SUCCESS',
-  AUTH_FAILURE: 'AUTH_FAILURE'
+  AUTH_FAILURE: 'AUTH_FAILURE',
+  SIGN_OUT_SUCCESS: 'SIGN_OUT_SUCCESS',
 }
 
 export default UserActionTypes

@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { Switch, Route, Redirect } from 'react-router-dom'
+
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
 import SignInSignUp from './pages/SignInAndSignUp.page'
+import Header from './components/header/header.component'
+import Shifts from './pages/Shifts.page'
+import Employees from './pages/Employees.page'
 import { InitialUserState, FetchStatusT, CurrentUser } from './types'
 interface AppProps {
   checkAuth: () => void
@@ -19,8 +24,13 @@ const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.E
 
   return (
     <div>
-      <h1>When I Work Demo</h1>
-      {currentUser?._id ? <h2>Logged In</h2> : <SignInSignUp />}
+      <Header />
+      <Switch>
+        <Route exact path="/" render={() => (currentUser?._id ? <Shifts /> : <SignInSignUp />)} />
+        <Route exact path="/shifts" render={() => (currentUser?._id ? <Shifts /> : <SignInSignUp />)} />
+        <Route exact path="/employees" render={() => (currentUser?._id ? <Employees /> : <SignInSignUp />)} />
+        <Route exact path="/signin" render={() => (currentUser?._id ? <Redirect to="/" /> : <SignInSignUp />)} />
+      </Switch>
     </div>
   )
 }

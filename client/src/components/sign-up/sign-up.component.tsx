@@ -56,7 +56,7 @@ const SignUp: React.FC<SignUpProps> = ({ signUp }): JSX.Element => {
         </div>
         <div>
           <label htmlFor="email">Email</label>
-           <input
+          <input
             name="email"
             type="email"
             required

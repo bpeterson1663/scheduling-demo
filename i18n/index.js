@@ -7,5 +7,5 @@ module.exports = {
   loggedOut: 'Successfully logged out',
   emailAlreadyExists: 'Email address already exists',
   businessAlreadyExists: 'A Business with that name is already registered.',
-  genericSignUpError: 'An error occured while you were signing up'
+  genericSignUpError: 'An error occured while you were signing up',
 }

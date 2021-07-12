@@ -5,11 +5,11 @@ import SignUp from '../components/sign-up/sign-up.component'
 import { ErrorT, FetchStatusT, InitialUserState } from '../types'
 
 interface SignInSignUpT {
-  error: ErrorT,
+  error: ErrorT
   fetchStatus: FetchStatusT
 }
 
-const SignInSignUp: React.FC<SignInSignUpT> = ({error, fetchStatus}) => {
+const SignInSignUp: React.FC<SignInSignUpT> = ({ error, fetchStatus }) => {
   return (
     <div>
       {fetchStatus === 'error' && <h3>{error}</h3>}
@@ -22,7 +22,7 @@ const mapStateToProps = ({ userReducer }: { userReducer: InitialUserState }) => 
   const { error, fetchStatus } = userReducer
   return {
     error,
-    fetchStatus
+    fetchStatus,
   }
 }
 export default connect(mapStateToProps)(SignInSignUp)

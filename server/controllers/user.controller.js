@@ -1,7 +1,14 @@
 const User = require('../models/User')
 const passport = require('passport')
 const { generateErrorResponse } = require('../utils')
-const { loggedIn, loggedOut, userUnathorized, emailAlreadyExists, businessAlreadyExists, genericSignUpError } = require('../../i18n')
+const {
+  loggedIn,
+  loggedOut,
+  userUnathorized,
+  emailAlreadyExists,
+  businessAlreadyExists,
+  genericSignUpError,
+} = require('../../i18n')
 
 const registerAndSignIn = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
@@ -20,8 +27,8 @@ const registerAndSignIn = (req, res) => {
     })
     .catch((error) => {
       let errorMessage = genericSignUpError
-      if(error && error.keyPattern && error.keyPattern.email === 1) errorMessage = emailAlreadyExists
-      if(error && error.keyPattern && error.keyPattern.businessName === 1) errorMessage = businessAlreadyExists
+      if (error && error.keyPattern && error.keyPattern.email === 1) errorMessage = emailAlreadyExists
+      if (error && error.keyPattern && error.keyPattern.businessName === 1) errorMessage = businessAlreadyExists
 
       return generateErrorResponse(res, 400, errorMessage)
     })

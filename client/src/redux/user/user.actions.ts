@@ -2,6 +2,7 @@ import { Dispatch } from 'redux'
 import UserActionTypes from './user.types'
 import { signIn, checkAuth, signUp } from '../../api'
 import { ErrorT, SignInT, SignUpT, UserT } from '../../types'
+import { signOut } from '../../api'
 
 const fetchAuthStart = () => ({
   type: UserActionTypes.SIGN_IN_START,
@@ -12,9 +13,13 @@ const fetchAuthSuccess = (user: UserT) => ({
   payload: user,
 })
 
+const fetchSignOutSuccess = () => ({
+  type: UserActionTypes.SIGN_OUT_SUCCESS,
+})
+
 const fetchAuthError = (errorMessage: ErrorT) => ({
   type: UserActionTypes.AUTH_FAILURE,
-  payload: errorMessage
+  payload: errorMessage,
 })
 
 export const fetchUserLogInStartAsync = (payload: SignInT) => async (dispatch: Dispatch) => {
@@ -24,7 +29,9 @@ export const fetchUserLogInStartAsync = (payload: SignInT) => async (dispatch: D
     const { user } = response.data
     dispatch(fetchAuthSuccess(user))
   } catch (err) {
-    const { response: { data } } = err
+    const {
+      response: { data },
+    } = err
     const { error } = data
     dispatch(fetchAuthError(error))
   }
@@ -37,7 +44,9 @@ export const fetchAuthStatusStartAsync = () => async (dispatch: Dispatch) => {
     const { user } = response.data
     dispatch(fetchAuthSuccess(user))
   } catch (err) {
-    const { response: { data } } = err
+    const {
+      response: { data },
+    } = err
     const { error } = data
     dispatch(fetchAuthError(error))
   }
@@ -50,7 +59,23 @@ export const fetchSignUpStartAsync = (payload: SignUpT) => async (dispatch: Disp
     const { user } = response.data
     dispatch(fetchAuthSuccess(user))
   } catch (err) {
-    const { response: { data } } = err
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchAuthError(error))
+  }
+}
+
+export const fetchSignOutStartAsync = () => async (dispatch: Dispatch) => {
+  dispatch(fetchAuthStart())
+  try {
+    await signOut()
+    dispatch(fetchSignOutSuccess())
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
     const { error } = data
     dispatch(fetchAuthError(error))
   }
