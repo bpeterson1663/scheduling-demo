@@ -1,5 +1,7 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const dotenv = require('dotenv')
 
 module.exports = {
   entry: './src/index.tsx',
@@ -34,5 +36,10 @@ module.exports = {
     compress: true,
     port: 3000,
   },
-  plugins: [new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html') })],
+  plugins: [ 
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html') }), 
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config({path: path.resolve(__dirname, '../.env')}).parsed) // it will automatically pick up key values from .env file
+    })
+  ],
 }
