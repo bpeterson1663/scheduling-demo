@@ -10,7 +10,7 @@ const INITIAL_STATE: InitialEmployeeState = {
 
 const employeeReducer = (state = INITIAL_STATE, action: AnyAction) => {
   switch (action.type) {
-    case EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_START:
+    case EmployeeActionTypes.FETCH_EMPLOYEE_START:
       return {
         ...state,
         fetchStatus: 'loading',
@@ -21,12 +21,18 @@ const employeeReducer = (state = INITIAL_STATE, action: AnyAction) => {
         fetchStatus: 'success',
         employees: [...state.employees, action.payload],
       }
-    case EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_FAILURE:
+    case EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE:
       return {
         ...state,
         fetchStatus: 'error',
-        employees: [...state.employees, action.payload],
       }
+    case EmployeeActionTypes.FETCH_ALL_EMPLOYEES_SUCCESS: {
+      return {
+        ...state,
+        fetchStatus: 'success',
+        employees: action.payload,
+      }
+    }
     default:
       return {
         ...state,

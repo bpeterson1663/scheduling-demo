@@ -6,9 +6,9 @@ import { ROLES } from '../../constants'
 import { EmployeeT, ErrorT, FetchStatusT, InitialEmployeeState, RoleT } from '../../types'
 
 interface NewEmployeeT {
-    createEmployee: (payload: EmployeeT) => void
-    fetchStatus: FetchStatusT
-    error: ErrorT
+  createEmployee: (payload: EmployeeT) => void
+  fetchStatus: FetchStatusT
+  error: ErrorT
 }
 const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, error }): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -25,14 +25,14 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, erro
       return
     }
     createEmployee({
-        email,
-        password,
-        firstName,
-        lastName,
-        role,
+      email,
+      password,
+      firstName,
+      lastName,
+      role,
     })
   }
-  if(fetchStatus === 'loading') return <h3>...Loading</h3>
+  if (fetchStatus === 'loading') return <h3>...Loading</h3>
   return (
     <div>
       {fetchStatus === 'error' && <h3>{error}</h3>}
@@ -67,7 +67,11 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, erro
         </div>
         <div>
           <label htmlFor="role">Role</label>
-          <select name="role" value={role} onChange={(e: ChangeEvent<HTMLSelectElement>) => setRole(e.target.value as RoleT)}>
+          <select
+            name="role"
+            value={role}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => setRole(e.target.value as RoleT)}
+          >
             {ROLES.map((role) => (
               <option key={role.value} value={role.value}>
                 {role.name}
@@ -99,16 +103,16 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, erro
   )
 }
 
-const mapStateToProps = ({ employeeReducer }: {  employeeReducer: InitialEmployeeState }) => {
-    const { fetchStatus, error } = employeeReducer
-    return {
-      fetchStatus,
-      error
-    }
+const mapStateToProps = ({ employeeReducer }: { employeeReducer: InitialEmployeeState }) => {
+  const { fetchStatus, error } = employeeReducer
+  return {
+    fetchStatus,
+    error,
   }
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    createEmployee: (payload: EmployeeT) => dispatch<any>(fetchEmployeeCreateStartAsync(payload))
+  createEmployee: (payload: EmployeeT) => dispatch<any>(fetchEmployeeCreateStartAsync(payload)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewEmployee)

@@ -1,32 +1,52 @@
 import { Dispatch } from 'redux'
 import EmployeeActionTypes from './employee.types'
 import { EmployeeT, UserT, ErrorT } from '../../types'
-import { createEmployee } from '../../api'
-const fetchCreateStart = () => ({
-    type: EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_START
+import { createEmployee, getAllEmployees } from '../../api'
+const fetchEmployeeStart = () => ({
+  type: EmployeeActionTypes.FETCH_EMPLOYEE_START,
 })
 
 const fetchCreateSuccess = (employee: UserT) => ({
-    type: EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_SUCCESS,
-    payload: employee
+  type: EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_SUCCESS,
+  payload: employee,
 })
 
-const fetchCreateFailure = (errorMessage: ErrorT) => ({
-    type: EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_FAILURE,
-    payload: errorMessage
+const fetchEmployeeFailure = (errorMessage: ErrorT) => ({
+  type: EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE,
+  payload: errorMessage,
 })
 
-export const fetchEmployeeCreateStartAsync = (payload: EmployeeT)=> async (dispatch: Dispatch) => {
-  dispatch(fetchCreateStart())
+export const fetchEmployeeCreateStartAsync = (payload: EmployeeT) => async (dispatch: Dispatch) => {
+  dispatch(fetchEmployeeStart())
   try {
-      const response = await createEmployee(payload)
-      const { employee } = response.data
-      dispatch(fetchCreateSuccess(employee))
+    const response = await createEmployee(payload)
+    const { user } = response.data
+    dispatch(fetchCreateSuccess(user))
   } catch (err) {
     const {
-        response: { data },
-      } = err
-      const { error } = data
-      dispatch(fetchCreateFailure(error))
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchEmployeeFailure(error))
+  }
+}
+
+const fetchAllEmployeesSuccess = (users: UserT[]) => ({
+  type: EmployeeActionTypes.FETCH_ALL_EMPLOYEES_SUCCESS,
+  payload: users,
+})
+
+export const fetchAllEmployeesStartAsync = () => async (dispatch: Dispatch) => {
+  dispatch(fetchEmployeeStart())
+  try {
+    const response = await getAllEmployees()
+    const { users } = response.data
+    dispatch(fetchAllEmployeesSuccess(users))
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchEmployeeFailure(error))
   }
 }

@@ -81,6 +81,7 @@ const createUser = (req, res) => {
       return res.status(201).json({
         success: true,
         id: user._id,
+        user: user,
       })
     })
     .catch((error) => {
