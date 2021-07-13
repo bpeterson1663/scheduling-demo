@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import EmployeeActionTypes from './employee.types'
 import { EmployeeT, UserT, MessageT, RoleT } from '../../types'
-import { createEmployee, getAllEmployees } from '../../api'
+import { createEmployee, getAllEmployees, deleteEmployee } from '../../api'
 const fetchEmployeeStart = () => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_START,
 })
@@ -36,6 +36,11 @@ const fetchAllEmployeesSuccess = (users: UserT[]) => ({
   payload: users,
 })
 
+const fetchDeleteSuccess = (id: string) => ({
+  type: EmployeeActionTypes.FETCH_DELETE_EMPLOYEE_SUCCESS,
+  payload: id,
+})
+
 export const fetchAllEmployeesStartAsync = (role: RoleT | null) => async (dispatch: Dispatch) => {
   if (role !== 'administrator') return
   dispatch(fetchEmployeeStart())
@@ -43,6 +48,20 @@ export const fetchAllEmployeesStartAsync = (role: RoleT | null) => async (dispat
     const response = await getAllEmployees()
     const { users } = response.data
     dispatch(fetchAllEmployeesSuccess(users))
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchEmployeeFailure(error))
+  }
+}
+
+export const fetchEmployeeDeleteStart = (id: string) => async (dispatch: Dispatch) => {
+  dispatch(fetchEmployeeStart())
+  try {
+    await deleteEmployee(id)
+    dispatch(fetchDeleteSuccess(id))
   } catch (err) {
     const {
       response: { data },

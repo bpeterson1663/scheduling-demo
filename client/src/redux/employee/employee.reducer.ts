@@ -36,6 +36,13 @@ const employeeReducer = (state = INITIAL_STATE, action: AnyAction) => {
         message: null,
       }
     }
+    case EmployeeActionTypes.FETCH_DELETE_EMPLOYEE_SUCCESS: {
+      return {
+        ...state,
+        fetchStatus: 'success',
+        employees: state.employees.filter((employee) => employee._id !== action.payload),
+      }
+    }
     default:
       return {
         ...state,
