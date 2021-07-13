@@ -6,6 +6,11 @@ import { fetchEmployeeCreateStartAsync } from '../../redux/employee/employee.act
 import { ROLES } from '../../constants'
 import { EmployeeT, MessageT, FetchStatusT, InitialEmployeeState, RoleT } from '../../types'
 import { selectMessage, selectFetchStatus } from '../../redux/employee/employee.selector'
+import { NewEmployeeContainer } from './new-employee.styles'
+import { FormInputContainer, FormInputLabel, GroupContainer, FormSelectContainer } from '../form/form-input.styles'
+import { CustomButtonContainer } from '../form/button.styles'
+import { ErrorMessage, SuccessMessage } from '../../components/message/message.styles'
+import Spinner from '../../components/spinner/spinner.component'
 
 interface NewEmployeeT {
   createEmployee: (payload: EmployeeT) => void
@@ -34,42 +39,42 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, mess
       role,
     })
   }
-  if (fetchStatus === 'loading') return <h3>...Loading</h3>
+  if (fetchStatus === 'loading') return <Spinner />
   return (
-    <div>
-      {fetchStatus === 'error' && <h3>{message}</h3>}
-      {fetchStatus === 'success' && <h3>{message}</h3>}
+    <NewEmployeeContainer>
+      {fetchStatus === 'error' && <ErrorMessage>{message}</ErrorMessage>}
+      {fetchStatus === 'success' && <SuccessMessage>{message}</SuccessMessage>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input
+        <GroupContainer>
+          <FormInputLabel htmlFor="firstName">First Name</FormInputLabel>
+          <FormInputContainer
             name="firstName"
             type="text"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="lastName">Last Name</FormInputLabel>
+          <FormInputContainer
             name="lastName"
             type="text"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="email">Email</FormInputLabel>
+          <FormInputContainer
             name="email"
             type="email"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="role">Role</label>
-          <select
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="role">Role</FormInputLabel>
+          <FormSelectContainer
             name="role"
             value={role}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setRole(e.target.value as RoleT)}
@@ -79,29 +84,29 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, mess
                 {role.name}
               </option>
             ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
+          </FormSelectContainer>
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="password">Password</FormInputLabel>
+          <FormInputContainer
             name="password"
             type="password"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="password">Confirm Password</label>
-          <input
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="password">Confirm Password</FormInputLabel>
+          <FormInputContainer
             name="confirmPassword"
             type="password"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
           />
-        </div>
-        <input type="submit" value="Create Employee" />
+        </GroupContainer>
+        <CustomButtonContainer type="submit" value="Create Employee" />
       </form>
-    </div>
+    </NewEmployeeContainer>
   )
 }
 

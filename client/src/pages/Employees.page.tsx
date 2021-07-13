@@ -8,6 +8,8 @@ import { UserT, InitialEmployeeState, FetchStatusT, MessageT, RoleT, InitialUser
 import { fetchAllEmployeesStartAsync, fetchEmployeeDeleteStart } from '../redux/employee/employee.actions'
 import { selectEmployees, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
 import { selectRole } from '../redux/user/user.selector'
+import { PageContainer, PageTitle } from './pages.styles'
+import Spinner from '../components/spinner/spinner.component'
 
 interface EmployeesT {
   getEmployees: (role: RoleT | undefined) => void
@@ -22,7 +24,7 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
     getEmployees(role)
   }, [getEmployees])
 
-  if (fetchStatus === 'loading') return <h3>...Loading</h3>
+  if (fetchStatus === 'loading') return <Spinner />
 
   const handleEmployeeDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this employee?') === true) {
@@ -30,12 +32,14 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
     }
   }
   return (
-    <div>
-      <h1>Employees</h1>
+    <>
+      <PageTitle>Employees</PageTitle>
       {fetchStatus === 'error' && <h3>{message}</h3>}
-      <NewEmployee />
-      <EmployeeList employees={employees} handleDelete={handleEmployeeDelete} />
-    </div>
+      <PageContainer>
+        <NewEmployee />
+        <EmployeeList employees={employees} handleDelete={handleEmployeeDelete} />
+      </PageContainer>
+    </>
   )
 }
 

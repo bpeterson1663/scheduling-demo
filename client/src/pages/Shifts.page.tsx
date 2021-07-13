@@ -20,6 +20,8 @@ import {
   RoleT,
 } from '../types'
 import { formatShifts } from '../helpers'
+import { PageContainer, PageTitle } from './pages.styles'
+import Spinner from '../components/spinner/spinner.component'
 
 interface ShiftsProps {
   getEmployees: (role: RoleT | undefined) => void
@@ -46,7 +48,7 @@ const Shifts: React.FC<ShiftsProps> = ({
     getEmployees(role)
     getShifts()
   }, [getEmployees])
-  if (fetchStatus === 'loading') return <h3>...Loading</h3>
+  if (fetchStatus === 'loading') return <Spinner />
   const formattedShifts = formatShifts(shifts, employees)
 
   const handleShiftDelete = (id: string) => {
@@ -55,12 +57,15 @@ const Shifts: React.FC<ShiftsProps> = ({
     }
   }
   return (
-    <div>
-      <h1>Shifts</h1>
-      {fetchStatus === 'error' && <h3>{message}</h3>}
-      {role === 'administrator' && <NewShift employees={employees} />}
-      <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} />
-    </div>
+    <>
+      <PageTitle>Shifts</PageTitle>
+
+      <PageContainer>
+        {fetchStatus === 'error' && <h3>{message}</h3>}
+        {role === 'administrator' && <NewShift employees={employees} />}
+        <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} />
+      </PageContainer>
+    </>
   )
 }
 

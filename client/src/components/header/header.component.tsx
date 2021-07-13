@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { HeaderContainer, OptionsContainer, OptionLink } from './header.styles'
+import { HeaderContainer, OptionsContainer, OptionLink, SignOutLink } from './header.styles'
 import { RoleT } from '../../types'
 import { fetchSignOutStartAsync } from '../../redux/user/user.actions'
 
@@ -15,7 +15,7 @@ const Header: React.FC<HeaderT> = ({ signOutStart, role }): JSX.Element => (
     <OptionsContainer>
       <OptionLink to="/shifts">SHIFTS</OptionLink>
       {role === 'administrator' && <OptionLink to="/employees">EMPLOYEES</OptionLink>}
-      <button onClick={signOutStart}>SIGN OUT</button>
+      <SignOutLink type="button" value="SIGN OUT" onClick={signOutStart} />
     </OptionsContainer>
   </HeaderContainer>
 )

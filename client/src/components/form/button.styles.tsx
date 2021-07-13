@@ -16,3 +16,17 @@ export const CustomButtonContainer = styled.input`
   margin: 10px 0;
   justify-content: center;
 `
+
+export const DeleteButtonContainer = styled.input`
+  width: auto;
+  letter-spacing: 0.5px;
+  line-height: 20px;
+  padding: 5px;
+  text-transform: uppercase;
+  font-family: 'Open Sans Condensed';
+  font-weight: bolder;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0px auto;
+`

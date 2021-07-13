@@ -7,8 +7,9 @@ import UnAuthenticatedApp from './UnAuthenticatedApp'
 import { selectCurrentUser, selectFetchStatus } from './redux/user/user.selector'
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
 import { GlobalStyle } from './global.styles'
-
+import Spinner from './components/spinner/spinner.component'
 import { InitialUserState, UserT, FetchStatusT, CurrentUser } from './types'
+
 interface AppProps {
   checkAuth: () => void
   currentUser: CurrentUser
@@ -20,7 +21,7 @@ const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.E
     checkAuth()
   }, [checkAuth])
 
-  if (fetchStatus === 'loading') return <h3>Loading....</h3>
+  if (fetchStatus === 'loading') return <Spinner />
 
   return (
     <div>

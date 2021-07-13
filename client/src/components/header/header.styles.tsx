@@ -5,7 +5,7 @@ export const HeaderContainer = styled.div`
   height: 70px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 25px;
 `
 
@@ -20,4 +20,11 @@ export const OptionsContainer = styled.div`
 export const OptionLink = styled(Link)`
   padding: 10px 15px;
   cursor: pointer;
+`
+
+export const SignOutLink = styled.input`
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: transparent;
+  margin-left: 50px;
 `

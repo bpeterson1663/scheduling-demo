@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 
-export const SignInSignUpContainer = styled.div`
-  width: 850px;
+export const PageContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin: 30px auto;
+  justify-content: center;
+  margin: 15px;
+`
+
+export const PageTitle = styled.h1`
+  justify-content: center;
+  display: flex;
 `

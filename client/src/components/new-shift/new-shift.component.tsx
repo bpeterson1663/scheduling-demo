@@ -6,6 +6,12 @@ import { selectMessage, selectFetchStatus } from '../../redux/shift/shift.select
 import { NewShiftT, UserT, InitialShiftState, FetchStatusT, MessageT } from '../../types'
 import { fetchShiftCreateStartAsync } from '../../redux/shift/shift.actions'
 import { createEpoch, createEndTime } from '../../helpers'
+import { FormInputContainer, FormInputLabel, GroupContainer, FormSelectContainer } from '../form/form-input.styles'
+import { CustomButtonContainer } from '../form/button.styles'
+import { NewShiftContainer } from './new-shift.styles'
+import Spinner from '../../components/spinner/spinner.component'
+import { ErrorMessage, SuccessMessage } from '../../components/message/message.styles'
+
 interface NewShiftProps {
   employees: UserT[]
   createShift: (payload: NewShiftT) => void
@@ -32,23 +38,25 @@ const NewShift: React.FC<NewShiftProps> = ({ employees, createShift, fetchStatus
       endTime: epochEndTime,
     })
   }
+  if (fetchStatus === 'loading') return <Spinner />
+
   return (
-    <div>
-      {fetchStatus === 'error' && <h3>{message}</h3>}
-      {fetchStatus === 'success' && <h3>{message}</h3>}
+    <NewShiftContainer>
+      {fetchStatus === 'error' && <ErrorMessage>{message}</ErrorMessage>}
+      {fetchStatus === 'success' && <SuccessMessage>{message}</SuccessMessage>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Shift Name</label>
-          <input
+        <GroupContainer>
+          <FormInputLabel htmlFor="name">Shift Name</FormInputLabel>
+          <FormInputContainer
             name="name"
             type="text"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="userId">Select Employee</label>
-          <select
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="userId">Select Employee</FormInputLabel>
+          <FormSelectContainer
             name="userId"
             defaultValue={userId}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setUserId(e.target.value)}
@@ -62,38 +70,38 @@ const NewShift: React.FC<NewShiftProps> = ({ employees, createShift, fetchStatus
                 {employee.lastName}, {employee.firstName}
               </option>
             ))}
-          </select>
-          <div>
-            <label htmlFor="date">Date</label>
-            <input
-              name="date"
-              type="date"
-              required
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="startTime">Start Time</label>
-            <input
-              name="startTime"
-              type="time"
-              required
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setStartTime(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="endTime">End Time</label>
-            <input
-              name="endTime"
-              type="time"
-              required
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setEndTime(e.target.value)}
-            />
-          </div>
-        </div>
-        <input type="submit" value="Create Shift" />
+          </FormSelectContainer>
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="date">Date</FormInputLabel>
+          <FormInputContainer
+            name="date"
+            type="date"
+            required
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
+          />
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="startTime">Start Time</FormInputLabel>
+          <FormInputContainer
+            name="startTime"
+            type="time"
+            required
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setStartTime(e.target.value)}
+          />
+        </GroupContainer>
+        <GroupContainer>
+          <FormInputLabel htmlFor="endTime">End Time</FormInputLabel>
+          <FormInputContainer
+            name="endTime"
+            type="time"
+            required
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setEndTime(e.target.value)}
+          />
+        </GroupContainer>
+        <CustomButtonContainer type="submit" value="Create Shift" />
       </form>
-    </div>
+    </NewShiftContainer>
   )
 }
 
