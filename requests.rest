@@ -1,65 +1,35 @@
-GET http://localhost:4000/api/shifts
+### AUTHENTICATION/USER ENDPOINTS ###
 
-###
-
-GET http://localhost:4000/api/shift/60e7cc6df581ee6f2ce31bac
-
-###
-
-POST http://localhost:4000/api/shift
-Content-Type: application/json
-
-{
-    "name": "Afternoon Shift",
-    "startTime": 1626544800000,
-    "endTime": 1626573600000
-}
-
-### 
-
-PUT http://localhost:4000/api/shift/60e7c7da29bad16e10420f9f
-Content-Type: application/json
-
-{
-    "startTime": 1626357600000
-}
-
-###
-
-DELETE http://localhost:4000/api/shift/60e9084317555b787bfb2d6e
-
-###
-
+### Create User
+# need to add password value before registering
 POST http://localhost:4000/api/register
 Content-Type:  application/json
 
 {
-    "email": "bpeterson1663@gmail.com",
-   "firstName": "Brady",
+    "email": "bpeterson@dummy.com",
+    "firstName": "Brady",
     "lastName": "Peterson",
     "role": "administrator",
-    "businessName": "Acme Inc"
+    "businessName": "Acme Inc",
 }
 
-###
-
+### Log In
+# need to add password value before registering
 POST http://localhost:4000/api/login
 Content-Type: application/json
 
 {
-    "email": "bpeterson1661@gmail.com",
+    "email": "bpeterson@dummy.com",
 }
 
-###
-
+### Check if authorized/session exists
 GET http://localhost:4000/api/authorized
 
-###
-
+### Log out user
 DELETE http://localhost:4000/api/logout
 
-###
-
+### Create User (Displayed as Employee on the UI)
+# need to add password value before registering
 POST http://localhost:4000/api/user
 Content-Type: application/json
 
@@ -70,21 +40,50 @@ Content-Type: application/json
     "role": "employee"
 }
 
-###
-
+### Get List of Users (Employees on UI side)
 GET http://localhost:4000/api/users
 
-###
+### Get single User
+GET http://localhost:4000/api/user/:USER_ID
 
-GET http://localhost:4000/api/user/60eb38ac2d0a6b1dab5c84ab
+### Delete User
+DELETE http://localhost:4000/api/user/:USER_ID
 
-### 
-DELETE http://localhost:4000/api/user/60eb38ac2d0a6b1dab5c84ab
-
-###
-PUT http://localhost:4000/api/user/60eb38ac2d0ddb1dab5c84ab
+### Update a User
+PUT http://localhost:4000/api/user/:USER_ID
 Content-Type: application/json
 
 {
   "firstName": "Brady"
 }
+
+### SHIFT ENDPOINTS ###
+
+### Get shifts
+# Optional params for filtering - userId: string, start: number, end: number
+GET http://localhost:4000/api/shifts?userId=:USER_ID
+
+### Get single shift
+GET http://localhost:4000/api/shift/:SHIFT_ID
+
+### Create a shift
+POST http://localhost:4000/api/shift
+Content-Type: application/json
+
+{
+    "name": "Afternoon Shift",
+    "startTime": 1626544800000,
+    "endTime": 1626573600000
+}
+
+### Update a shift
+PUT http://localhost:4000/api/shift/:SHIFT_ID
+
+{
+    "startTime": 1626357600000
+}
+
+### Delete a shift
+DELETE http://localhost:4000/api/shift/:SHIFT_ID
+
+
