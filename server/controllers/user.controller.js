@@ -92,7 +92,7 @@ const createUser = (req, res) => {
 const getAllUsers = (req, res) => {
   if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
 
-  User.find({ businessName: req.user.businessName }, (error, users) => {
+  User.find({ businessName: req.user.businessName, _id: { $ne: req.user._id} }, (error, users) => {
     if (error) return generateErrorResponse(res, 400, error.message)
 
     return res.status(200).json({
