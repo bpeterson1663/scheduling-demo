@@ -39,8 +39,8 @@ const getAllShifts = (req, res) => {
   const conditions = []
   if (req.user.role === 'employee') {
     conditions.push({ userId: req.user._id })
-  } else if(req.user.role === 'administrator' && userId){
-    conditions.push({ userId: userId})
+  } else if (req.user.role === 'administrator' && userId) {
+    conditions.push({ userId: userId })
   }
   if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
   if (end) conditions.push({ endTime: { $gte: parseInt(end) } })

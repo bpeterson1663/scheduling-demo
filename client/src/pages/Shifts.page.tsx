@@ -5,21 +5,31 @@ import ShiftList from '../components/shift-list/shift-list.component'
 import { Dispatch } from 'redux'
 import { fetchAllEmployeesStartAsync } from '../redux/employee/employee.actions'
 import { fetchAllShiftsStartSync } from '../redux/shift/shift.actions'
-import { ShiftT, UserT, InitialEmployeeState, FetchStatusT, MessageT, InitialShiftState } from '../types'
+import {
+  ShiftT,
+  UserT,
+  InitialEmployeeState,
+  FetchStatusT,
+  MessageT,
+  InitialShiftState,
+  InitialUserState,
+  RoleT,
+} from '../types'
 import { formatShifts } from '../helpers'
 
 interface ShiftsProps {
-  getEmployees: () => void
+  getEmployees: (role: RoleT | null) => void
   getShifts: () => void
   employees: UserT[]
   fetchStatus: FetchStatusT
   message: MessageT
   shifts: ShiftT[]
+  role: RoleT | null
 }
 
-const Shifts: React.FC<ShiftsProps> = ({ getEmployees, getShifts, employees, fetchStatus, message, shifts }) => {
+const Shifts: React.FC<ShiftsProps> = ({ role, getEmployees, getShifts, employees, fetchStatus, message, shifts }) => {
   useEffect(() => {
-    getEmployees()
+    getEmployees(role)
     getShifts()
   }, [getEmployees])
   if (fetchStatus === 'loading') return <h3>...Loading</h3>
@@ -28,7 +38,7 @@ const Shifts: React.FC<ShiftsProps> = ({ getEmployees, getShifts, employees, fet
     <div>
       <h1>Shifts</h1>
       {fetchStatus === 'error' && <h3>{message}</h3>}
-      <NewShift employees={employees} />
+      {role === 'administrator' && <NewShift employees={employees} />}
       <ShiftList shifts={formattedShifts} />
     </div>
   )
@@ -37,22 +47,27 @@ const Shifts: React.FC<ShiftsProps> = ({ getEmployees, getShifts, employees, fet
 const mapStateToProps = ({
   employeeReducer,
   shiftReducer,
+  userReducer,
 }: {
   employeeReducer: InitialEmployeeState
   shiftReducer: InitialShiftState
+  userReducer: InitialUserState
 }) => {
   const { employees, fetchStatus, message } = employeeReducer
   const { shifts } = shiftReducer
+  const { currentUser } = userReducer
+  const role = currentUser?.role || null
   return {
     employees,
     fetchStatus,
     message,
     shifts,
+    role,
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getEmployees: () => dispatch<any>(fetchAllEmployeesStartAsync()),
+  getEmployees: (role: RoleT | null) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
   getShifts: () => dispatch<any>(fetchAllShiftsStartSync()),
 })
 

@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Switch, Route, Redirect } from 'react-router-dom'
-
+import AuthenticatedApp from './AuthenticatedApp'
+import UnAuthenticatedApp from './UnAuthenticatedApp'
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
-import SignInSignUp from './pages/SignInAndSignUp.page'
-import Header from './components/header/header.component'
-import Shifts from './pages/Shifts.page'
-import Employees from './pages/Employees.page'
+
 import { InitialUserState, FetchStatusT, CurrentUser } from './types'
 interface AppProps {
   checkAuth: () => void
@@ -20,17 +17,15 @@ const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.E
     checkAuth()
   }, [checkAuth])
 
-  if (fetchStatus === 'loading') return <h1>Loading....</h1>
+  if (fetchStatus === 'loading') return <h3>Loading....</h3>
 
   return (
     <div>
-      <Header />
-      <Switch>
-        <Route exact path="/" render={() => (currentUser?._id ? <Shifts /> : <SignInSignUp />)} />
-        <Route exact path="/shifts" render={() => (currentUser?._id ? <Shifts /> : <SignInSignUp />)} />
-        <Route exact path="/employees" render={() => (currentUser?._id ? <Employees /> : <SignInSignUp />)} />
-        <Route exact path="/signin" render={() => (currentUser?._id ? <Redirect to="/" /> : <SignInSignUp />)} />
-      </Switch>
+      {currentUser?._id && fetchStatus === 'success' ? (
+        <AuthenticatedApp role={currentUser.role} />
+      ) : (
+        <UnAuthenticatedApp />
+      )}
     </div>
   )
 }

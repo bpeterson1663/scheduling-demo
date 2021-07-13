@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { SignInT, SignUpT, EmployeeT, NewShiftT } from '../types'
 
-const baseURL = 'https://when-i-work-challenge.herokuapp.com/api'
+const baseURL = 'http://localhost:4000/api'
 
 const api = axios.create({
   withCredentials: true,

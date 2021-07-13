@@ -2,41 +2,26 @@ import React from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { HeaderContainer, OptionsContainer, OptionLink } from './header.styles'
-import { InitialUserState, UserT } from '../../types'
+import { RoleT } from '../../types'
 import { fetchSignOutStartAsync } from '../../redux/user/user.actions'
 
 interface HeaderT {
-  currentUser: UserT | null
   signOutStart: () => void
+  role: RoleT
 }
 
-const Header: React.FC<HeaderT> = ({ currentUser, signOutStart }): JSX.Element => {
-  return (
-    <HeaderContainer>
-      <OptionsContainer>
-        {currentUser?._id ? (
-          <>
-            <OptionLink to="/employees">EMPLOYEES</OptionLink>
-            <OptionLink to="/shifts">MANAGE SHIFTS</OptionLink>
-            <button onClick={signOutStart}>SIGN OUT</button>
-          </>
-        ) : (
-          <OptionLink to="/signin">SIGN IN</OptionLink>
-        )}
-      </OptionsContainer>
-    </HeaderContainer>
-  )
-}
-
-const mapStateToProps = ({ userReducer }: { userReducer: InitialUserState }) => {
-  const { currentUser } = userReducer
-  return {
-    currentUser,
-  }
-}
+const Header: React.FC<HeaderT> = ({ signOutStart, role }): JSX.Element => (
+  <HeaderContainer>
+    <OptionsContainer>
+      <OptionLink to="/shifts">SHIFTS</OptionLink>
+      {role === 'administrator' && <OptionLink to="/employees">EMPLOYEES</OptionLink>}
+      <button onClick={signOutStart}>SIGN OUT</button>
+    </OptionsContainer>
+  </HeaderContainer>
+)
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signOutStart: () => dispatch<any>(fetchSignOutStartAsync()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(null, mapDispatchToProps)(Header)

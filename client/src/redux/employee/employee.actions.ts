@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import EmployeeActionTypes from './employee.types'
-import { EmployeeT, UserT, MessageT } from '../../types'
+import { EmployeeT, UserT, MessageT, RoleT } from '../../types'
 import { createEmployee, getAllEmployees } from '../../api'
 const fetchEmployeeStart = () => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_START,
@@ -36,7 +36,8 @@ const fetchAllEmployeesSuccess = (users: UserT[]) => ({
   payload: users,
 })
 
-export const fetchAllEmployeesStartAsync = () => async (dispatch: Dispatch) => {
+export const fetchAllEmployeesStartAsync = (role: RoleT | null) => async (dispatch: Dispatch) => {
+  if (role !== 'administrator') return
   dispatch(fetchEmployeeStart())
   try {
     const response = await getAllEmployees()
