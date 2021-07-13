@@ -1,9 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react'
+import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { fetchEmployeeCreateStartAsync } from '../../redux/employee/employee.actions'
 import { ROLES } from '../../constants'
 import { EmployeeT, MessageT, FetchStatusT, InitialEmployeeState, RoleT } from '../../types'
+import { selectMessage, selectFetchStatus } from '../../redux/employee/employee.selector'
 
 interface NewEmployeeT {
   createEmployee: (payload: EmployeeT) => void
@@ -103,13 +105,19 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, mess
   )
 }
 
-const mapStateToProps = ({ employeeReducer }: { employeeReducer: InitialEmployeeState }) => {
-  const { fetchStatus, message } = employeeReducer
-  return {
-    fetchStatus,
-    message,
-  }
+interface State {
+  employeeReducer: InitialEmployeeState
 }
+
+interface DesiredSelection {
+  fetchStatus: FetchStatusT
+  message: MessageT
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  message: selectMessage,
+  fetchStatus: selectFetchStatus,
+})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   createEmployee: (payload: EmployeeT) => dispatch<any>(fetchEmployeeCreateStartAsync(payload)),

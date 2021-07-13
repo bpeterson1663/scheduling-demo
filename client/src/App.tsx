@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import { Dispatch } from 'redux'
 import AuthenticatedApp from './AuthenticatedApp'
 import UnAuthenticatedApp from './UnAuthenticatedApp'
+import { selectCurrentUser, selectFetchStatus } from './redux/user/user.selector'
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
 
-import { InitialUserState, FetchStatusT, CurrentUser } from './types'
+import { InitialUserState, UserT, FetchStatusT, CurrentUser } from './types'
 interface AppProps {
   checkAuth: () => void
   currentUser: CurrentUser
@@ -30,13 +32,19 @@ const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.E
   )
 }
 
-const mapStateToProps = ({ userReducer }: { userReducer: InitialUserState }) => {
-  const { fetchStatus, currentUser } = userReducer
-  return {
-    currentUser,
-    fetchStatus,
-  }
+interface State {
+  userReducer: InitialUserState
 }
+
+interface DesiredSelection {
+  currentUser: UserT | null
+  fetchStatus: FetchStatusT
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  currentUser: selectCurrentUser,
+  fetchStatus: selectFetchStatus,
+})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   checkAuth: () => dispatch<any>(fetchAuthStatusStartAsync()),

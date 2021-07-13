@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import NewShift from '../components/new-shift/new-shift.component'
 import ShiftList from '../components/shift-list/shift-list.component'
 import { Dispatch } from 'redux'
 import { fetchAllEmployeesStartAsync } from '../redux/employee/employee.actions'
 import { fetchAllShiftsStartSync, fetchShiftDeleteStart } from '../redux/shift/shift.actions'
+import { selectEmployees, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
+import { selectRole } from '../redux/user/user.selector'
+import { selectShifts } from '../redux/shift/shift.selector'
 import {
   ShiftT,
   UserT,
@@ -18,14 +22,14 @@ import {
 import { formatShifts } from '../helpers'
 
 interface ShiftsProps {
-  getEmployees: (role: RoleT | null) => void
+  getEmployees: (role: RoleT | undefined) => void
   getShifts: () => void
   deleteShift: (id: string) => void
   employees: UserT[]
   fetchStatus: FetchStatusT
   message: MessageT
   shifts: ShiftT[]
-  role: RoleT | null
+  role: RoleT | undefined
 }
 
 const Shifts: React.FC<ShiftsProps> = ({
@@ -60,30 +64,30 @@ const Shifts: React.FC<ShiftsProps> = ({
   )
 }
 
-const mapStateToProps = ({
-  employeeReducer,
-  shiftReducer,
-  userReducer,
-}: {
+interface State {
   employeeReducer: InitialEmployeeState
   shiftReducer: InitialShiftState
   userReducer: InitialUserState
-}) => {
-  const { employees, fetchStatus, message } = employeeReducer
-  const { shifts } = shiftReducer
-  const { currentUser } = userReducer
-  const role = currentUser?.role || null
-  return {
-    employees,
-    fetchStatus,
-    message,
-    shifts,
-    role,
-  }
 }
 
+interface DesiredSelection {
+  employees: UserT[]
+  fetchStatus: FetchStatusT
+  message: MessageT
+  role: RoleT | undefined
+  shifts: ShiftT[]
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  employees: selectEmployees,
+  fetchStatus: selectFetchStatus,
+  message: selectMessage,
+  role: selectRole,
+  shifts: selectShifts,
+})
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getEmployees: (role: RoleT | null) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
+  getEmployees: (role: RoleT | undefined) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
   getShifts: () => dispatch<any>(fetchAllShiftsStartSync()),
   deleteShift: (id: string) => dispatch<any>(fetchShiftDeleteStart(id)),
 })

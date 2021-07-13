@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import SignIn from '../components/sign-in/sign-in.component'
 import SignUp from '../components/sign-up/sign-up.component'
 import { MessageT, FetchStatusT, InitialUserState } from '../types'
+import { selectMessage, selectFetchStatus } from '../redux/user/user.selector'
 
 interface SignInSignUpT {
   message: MessageT
@@ -18,11 +20,18 @@ const SignInSignUp: React.FC<SignInSignUpT> = ({ message, fetchStatus }) => {
     </div>
   )
 }
-const mapStateToProps = ({ userReducer }: { userReducer: InitialUserState }) => {
-  const { message, fetchStatus } = userReducer
-  return {
-    message,
-    fetchStatus,
-  }
+
+interface State {
+  userReducer: InitialUserState
 }
+
+interface DesiredSelection {
+  fetchStatus: FetchStatusT
+  message: MessageT
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  message: selectMessage,
+  fetchStatus: selectFetchStatus,
+})
 export default connect(mapStateToProps)(SignInSignUp)

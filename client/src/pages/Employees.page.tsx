@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { createStructuredSelector } from 'reselect'
 import NewEmployee from '../components/new-employee/new-employee.component'
 import EmployeeList from '../components/employee-list/employee-list.component'
 import { UserT, InitialEmployeeState, FetchStatusT, MessageT, RoleT, InitialUserState } from '../types'
 import { fetchAllEmployeesStartAsync, fetchEmployeeDeleteStart } from '../redux/employee/employee.actions'
+import { selectEmployees, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
+import { selectRole } from '../redux/user/user.selector'
+
 interface EmployeesT {
-  getEmployees: (role: RoleT | null) => void
+  getEmployees: (role: RoleT | undefined) => void
   deleteEmployee: (id: string) => void
   employees: UserT[]
   fetchStatus: FetchStatusT
   message: MessageT
-  role: RoleT | null
+  role: RoleT | undefined
 }
 const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, deleteEmployee, fetchStatus, message }) => {
   useEffect(() => {
@@ -35,26 +39,27 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
   )
 }
 
-const mapStateToProps = ({
-  employeeReducer,
-  userReducer,
-}: {
+interface State {
   employeeReducer: InitialEmployeeState
   userReducer: InitialUserState
-}) => {
-  const { employees, fetchStatus, message } = employeeReducer
-  const { currentUser } = userReducer
-  const role = currentUser?.role || null
-  return {
-    employees,
-    fetchStatus,
-    message,
-    role,
-  }
 }
 
+interface DesiredSelection {
+  employees: UserT[]
+  fetchStatus: FetchStatusT
+  message: MessageT
+  role: RoleT | undefined
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  employees: selectEmployees,
+  fetchStatus: selectFetchStatus,
+  message: selectMessage,
+  role: selectRole,
+})
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getEmployees: (role: RoleT | null) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
+  getEmployees: (role: RoleT | undefined) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
   deleteEmployee: (id: string) => dispatch<any>(fetchEmployeeDeleteStart(id)),
 })
 

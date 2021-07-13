@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { selectMessage, selectFetchStatus } from '../../redux/shift/shift.selector'
 import { NewShiftT, UserT, InitialShiftState, FetchStatusT, MessageT } from '../../types'
 import { fetchShiftCreateStartAsync } from '../../redux/shift/shift.actions'
 import { createEpoch, createEndTime } from '../../helpers'
@@ -95,13 +97,19 @@ const NewShift: React.FC<NewShiftProps> = ({ employees, createShift, fetchStatus
   )
 }
 
-const mapStateToProps = ({ shiftReducer }: { shiftReducer: InitialShiftState }) => {
-  const { fetchStatus, message } = shiftReducer
-  return {
-    fetchStatus,
-    message,
-  }
+interface State {
+  shiftReducer: InitialShiftState
 }
+
+interface DesiredSelection {
+  fetchStatus: FetchStatusT
+  message: MessageT
+}
+
+const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
+  message: selectMessage,
+  fetchStatus: selectFetchStatus,
+})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   createShift: (payload: NewShiftT) => dispatch<any>(fetchShiftCreateStartAsync(payload)),

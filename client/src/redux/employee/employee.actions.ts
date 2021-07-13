@@ -41,7 +41,7 @@ const fetchDeleteSuccess = (id: string) => ({
   payload: id,
 })
 
-export const fetchAllEmployeesStartAsync = (role: RoleT | null) => async (dispatch: Dispatch) => {
+export const fetchAllEmployeesStartAsync = (role: RoleT | undefined) => async (dispatch: Dispatch) => {
   if (role !== 'administrator') return
   dispatch(fetchEmployeeStart())
   try {
