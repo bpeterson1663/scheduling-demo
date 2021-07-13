@@ -45,14 +45,16 @@ const getAllShifts = (req, res) => {
   if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
   if (end) conditions.push({ endTime: { $gte: parseInt(end) } })
   const searchCondition = conditions.length > 0 ? { $and: conditions } : {}
-  Shift.find(searchCondition).sort({ startTime: 1 }).exec((error, shifts) => {
-    if (error) return generateErrorResponse(res, 400, error.message)
+  Shift.find(searchCondition)
+    .sort({ startTime: 1 })
+    .exec((error, shifts) => {
+      if (error) return generateErrorResponse(res, 400, error.message)
 
-    return res.status(200).json({
-      success: true,
-      shifts,
+      return res.status(200).json({
+        success: true,
+        shifts,
+      })
     })
-  })
 }
 
 const updateShift = (req, res) => {
@@ -63,6 +65,7 @@ const updateShift = (req, res) => {
   const conditionCheck = shifsOverlapQuery(startTime, endTime)
 
   Shift.find(conditionCheck).countDocuments((err, count) => {
+    if (err) return gerenateErrorResponse(res, 400, err.message)
     //If count exists, then shift overlaps
     if (count) {
       return generateErrorResponse(res, 400, shiftOvelapsError)

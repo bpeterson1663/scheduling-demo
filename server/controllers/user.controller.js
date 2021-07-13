@@ -13,25 +13,31 @@ const {
 const registerAndSignIn = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
   const user = new User(req.body)
-
-  user
-    .save()
-    .then(() => {
-      req.logIn(user, (err) => {
-        if (err) generateErrorResponse(res, 401, err)
-        const { email, _id, firstName, lastName, businessName, role } = user
-        return res
-          .status(201)
-          .json({ user: { _id, email, firstName, lastName, businessName, role }, success: true, message: loggedIn })
-      })
-    })
-    .catch((error) => {
-      let errorMessage = genericSignUpError
-      if (error && error.keyPattern && error.keyPattern.email === 1) errorMessage = emailAlreadyExists
-      if (error && error.keyPattern && error.keyPattern.businessName === 1) errorMessage = businessAlreadyExists
-
-      return generateErrorResponse(res, 400, errorMessage)
-    })
+  const { businessName } = req.body
+  User.find({ businessName: businessName }).countDocuments((err, count) => {
+    if (err) return gerenateErrorResponse(res, 400, err.message)
+    // If at least one user has businessName with the new users buinsess name then dont let them sign up
+    if (count) {
+      return generateErrorResponse(res, 400, businessAlreadyExists)
+    } else {
+      user
+        .save()
+        .then(() => {
+          req.logIn(user, (err) => {
+            if (err) generateErrorResponse(res, 401, err)
+            const { email, _id, firstName, lastName, businessName, role } = user
+            return res
+              .status(201)
+              .json({ user: { _id, email, firstName, lastName, businessName, role }, success: true, message: loggedIn })
+          })
+        })
+        .catch((error) => {
+          let errorMessage = genericSignUpError
+          if (error && error.keyPattern && error.keyPattern.email === 1) errorMessage = emailAlreadyExists
+          return generateErrorResponse(res, 400, errorMessage)
+        })
+    }
+  })
 }
 
 const authenticateUser = (req, res, next) => {
