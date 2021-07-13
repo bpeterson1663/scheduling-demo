@@ -13,5 +13,6 @@ export const CustomButtonContainer = styled.input`
   font-weight: bolder;
   cursor: pointer;
   display: flex;
+  margin: 10px 0;
   justify-content: center;
 `

@@ -6,7 +6,7 @@ const mainColor = 'black'
 export const GroupContainer = styled.div`
   display: flex;
   flex-flow: row;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
 `
 
@@ -14,9 +14,10 @@ export const FormInputContainer = styled.input`
   background: none;
   background-color: white;
   color: ${subColor};
-  font-size: 18px;
+  font-size: 12px;
   padding: 5px;
   display: block;
+  width: 80%;
   border: none;
   border-radius: 0;
   border-bottom: 1px solid ${subColor};
