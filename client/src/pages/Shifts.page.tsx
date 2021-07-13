@@ -50,6 +50,7 @@ const Shifts: React.FC<ShiftsProps> = ({
     getShifts()
   }, [getEmployees])
   if (fetchStatus === 'loading') return <Spinner />
+  shifts.sort((a, b) => a.startTime - b.startTime)
   const formattedShifts = formatShifts(shifts, employees)
 
   const handleShiftDelete = (id: string) => {

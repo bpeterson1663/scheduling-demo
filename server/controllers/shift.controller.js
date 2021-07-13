@@ -45,7 +45,7 @@ const getAllShifts = (req, res) => {
   if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
   if (end) conditions.push({ endTime: { $gte: parseInt(end) } })
   const searchCondition = conditions.length > 0 ? { $and: conditions } : {}
-  Shift.find(searchCondition, (error, shifts) => {
+  Shift.find(searchCondition).sort({ startTime: 1 }).exec((error, shifts) => {
     if (error) return generateErrorResponse(res, 400, error.message)
 
     return res.status(200).json({
@@ -90,6 +90,7 @@ const getShiftById = (req, res) => {
 }
 
 const deleteShift = (req, res) => {
+  if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
   Shift.findOneAndDelete({ _id: req.params.id }, (error, shift) => {
     if (error) generateErrorResponse(res, 400, error.message)
 
