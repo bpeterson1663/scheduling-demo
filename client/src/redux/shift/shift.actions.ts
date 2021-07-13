@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import ShiftActionTypes from './shift.types'
 import { NewShiftT, ShiftT, MessageT } from '../../types'
-import { createShift, getAllShifts } from '../../api'
+import { createShift, getAllShifts, deleteShift } from '../../api'
 
 const fetchShiftStart = () => ({
   type: ShiftActionTypes.FETCH_SHIFT_START,
@@ -20,6 +20,11 @@ const fetchShiftFailure = (errorMessage: MessageT) => ({
 const fetchAllShiftsSuccess = (shifts: ShiftT[]) => ({
   type: ShiftActionTypes.FETCH_ALL_SHIFT_SUCCESS,
   payload: shifts,
+})
+
+const fetchDeleteSuccess = (id: string) => ({
+  type: ShiftActionTypes.FETCH_DELETE_SHIFT_SUCCESS,
+  payload: id,
 })
 
 export const fetchShiftCreateStartAsync = (payload: NewShiftT) => async (dispatch: Dispatch) => {
@@ -43,6 +48,20 @@ export const fetchAllShiftsStartSync = () => async (dispatch: Dispatch) => {
     const response = await getAllShifts()
     const { shifts } = response.data
     dispatch(fetchAllShiftsSuccess(shifts))
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchShiftFailure(error))
+  }
+}
+
+export const fetchShiftDeleteStart = (id: string) => async (dispatch: Dispatch) => {
+  dispatch(fetchShiftStart())
+  try {
+    await deleteShift(id)
+    dispatch(fetchDeleteSuccess(id))
   } catch (err) {
     const {
       response: { data },

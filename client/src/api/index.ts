@@ -18,3 +18,4 @@ export const getAllEmployees = (): Promise<AxiosResponse> => api.get('/users')
 
 export const createShift = (payload: NewShiftT): Promise<AxiosResponse> => api.post('/shift', payload)
 export const getAllShifts = (): Promise<AxiosResponse> => api.get('/shifts')
+export const deleteShift = (id: string): Promise<AxiosResponse> => api.delete(`/shift/${id}`)

@@ -36,6 +36,13 @@ const shiftReducer = (state = INITIAL_STATE, action: AnyAction) => {
         message: null,
       }
     }
+    case ShiftActionTypes.FETCH_DELETE_SHIFT_SUCCESS: {
+      return {
+        ...state,
+        fetchStatus: 'success',
+        shifts: state.shifts.filter(shift => shift._id !== action.payload)
+      }
+    }
     default:
       return {
         ...state,

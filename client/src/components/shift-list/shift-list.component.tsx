@@ -3,9 +3,10 @@ import { DisplayShiftT } from '../../types'
 
 interface ShiftListT {
   shifts: DisplayShiftT[]
+  handleDelete: (id: string) => void
 }
 
-const ShiftList: React.FC<ShiftListT> = ({ shifts }): JSX.Element => {
+const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element => {
   return (
     <div>
       <table>
@@ -17,6 +18,7 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts }): JSX.Element => {
             <th>Start Time</th>
             <th>End Time</th>
             <th>Duration (hours)</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +30,7 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts }): JSX.Element => {
               <td>{shift.startTime}</td>
               <td>{shift.endTime}</td>
               <td>{shift.duration}</td>
+              <td><input type="button" value="Delete" onClick={() => handleDelete(shift._id)} /></td>
             </tr>
           ))}
         </tbody>

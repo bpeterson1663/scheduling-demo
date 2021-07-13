@@ -4,7 +4,7 @@ import NewShift from '../components/new-shift/new-shift.component'
 import ShiftList from '../components/shift-list/shift-list.component'
 import { Dispatch } from 'redux'
 import { fetchAllEmployeesStartAsync } from '../redux/employee/employee.actions'
-import { fetchAllShiftsStartSync } from '../redux/shift/shift.actions'
+import { fetchAllShiftsStartSync, fetchShiftDeleteStart } from '../redux/shift/shift.actions'
 import {
   ShiftT,
   UserT,
@@ -20,6 +20,7 @@ import { formatShifts } from '../helpers'
 interface ShiftsProps {
   getEmployees: (role: RoleT | null) => void
   getShifts: () => void
+  deleteShift: (id: string) => void
   employees: UserT[]
   fetchStatus: FetchStatusT
   message: MessageT
@@ -27,19 +28,25 @@ interface ShiftsProps {
   role: RoleT | null
 }
 
-const Shifts: React.FC<ShiftsProps> = ({ role, getEmployees, getShifts, employees, fetchStatus, message, shifts }) => {
+const Shifts: React.FC<ShiftsProps> = ({ deleteShift, role, getEmployees, getShifts, employees, fetchStatus, message, shifts }) => {
   useEffect(() => {
     getEmployees(role)
     getShifts()
   }, [getEmployees])
   if (fetchStatus === 'loading') return <h3>...Loading</h3>
   const formattedShifts = formatShifts(shifts, employees)
+
+  const handleShiftDelete = (id: string) => {
+    if(confirm("Are you sure you want to delete this shift?") === true){
+      deleteShift(id)
+    }
+  }
   return (
     <div>
       <h1>Shifts</h1>
       {fetchStatus === 'error' && <h3>{message}</h3>}
       {role === 'administrator' && <NewShift employees={employees} />}
-      <ShiftList shifts={formattedShifts} />
+      <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete}/>
     </div>
   )
 }
@@ -69,6 +76,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getEmployees: (role: RoleT | null) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
   getShifts: () => dispatch<any>(fetchAllShiftsStartSync()),
+  deleteShift: (id: string) => dispatch<any>(fetchShiftDeleteStart(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shifts)
