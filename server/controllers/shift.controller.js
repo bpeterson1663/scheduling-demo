@@ -35,14 +35,16 @@ const createShift = (req, res) => {
 }
 
 const getAllShifts = (req, res) => {
-  const { start, end } = req.query
+  const { start, end, userId } = req.query
   const conditions = []
-
+  if (req.user.role === 'employee') {
+    conditions.push({ userId: req.user._id })
+  } else if(req.user.role === 'administrator' && userId){
+    conditions.push({ userId: userId})
+  }
   if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
   if (end) conditions.push({ endTime: { $gte: parseInt(end) } })
-
   const searchCondition = conditions.length > 0 ? { $and: conditions } : {}
-
   Shift.find(searchCondition, (error, shifts) => {
     if (error) return generateErrorResponse(res, 400, error.message)
 
@@ -54,6 +56,7 @@ const getAllShifts = (req, res) => {
 }
 
 const updateShift = (req, res) => {
+  if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
 
   const { startTime, endTime } = req.body
