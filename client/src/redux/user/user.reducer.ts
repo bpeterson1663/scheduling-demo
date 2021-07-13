@@ -20,14 +20,14 @@ const userReducer = (state = INITIAL_STATE, action: AnyAction) => {
         ...state,
         fetchStatus: 'success',
         currentUser: action.payload,
-        error: null,
+        message: null,
       }
     case UserActionTypes.AUTH_FAILURE:
       return {
         ...state,
         fetchStatus: 'error',
         currentUser: null,
-        error: action.payload,
+        message: action.payload,
       }
     case UserActionTypes.SIGN_OUT_SUCCESS:
       return {

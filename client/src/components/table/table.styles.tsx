@@ -24,3 +24,7 @@ export const StyledTable = styled.table`
     background-color: #c2c2c2;
   }
 `
+
+export const TableContainer = styled.div`
+  width: 100%;
+`

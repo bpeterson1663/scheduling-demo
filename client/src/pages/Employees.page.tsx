@@ -8,7 +8,8 @@ import { UserT, InitialEmployeeState, FetchStatusT, MessageT, RoleT, InitialUser
 import { fetchAllEmployeesStartAsync, fetchEmployeeDeleteStart } from '../redux/employee/employee.actions'
 import { selectEmployees, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
 import { selectRole } from '../redux/user/user.selector'
-import { PageContainer, PageTitle } from './pages.styles'
+import { PageContainer, ContentContainer, PageTitle } from './pages.styles'
+import { ErrorMessage } from '../components/message/message.styles'
 import Spinner from '../components/spinner/spinner.component'
 
 interface EmployeesT {
@@ -32,14 +33,14 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
     }
   }
   return (
-    <>
+    <PageContainer>
       <PageTitle>Employees</PageTitle>
-      {fetchStatus === 'error' && <h3>{message}</h3>}
-      <PageContainer>
+      {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+      <ContentContainer>
         <NewEmployee />
         <EmployeeList employees={employees} handleDelete={handleEmployeeDelete} />
-      </PageContainer>
-    </>
+      </ContentContainer>
+    </PageContainer>
   )
 }
 

@@ -9,6 +9,7 @@ import { fetchAllShiftsStartSync, fetchShiftDeleteStart } from '../redux/shift/s
 import { selectEmployees, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
 import { selectRole } from '../redux/user/user.selector'
 import { selectShifts } from '../redux/shift/shift.selector'
+import { ErrorMessage } from '../components/message/message.styles'
 import {
   ShiftT,
   UserT,
@@ -20,7 +21,7 @@ import {
   RoleT,
 } from '../types'
 import { formatShifts } from '../helpers'
-import { PageContainer, PageTitle } from './pages.styles'
+import { PageContainer, ContentContainer, PageTitle } from './pages.styles'
 import Spinner from '../components/spinner/spinner.component'
 
 interface ShiftsProps {
@@ -57,15 +58,14 @@ const Shifts: React.FC<ShiftsProps> = ({
     }
   }
   return (
-    <>
+    <PageContainer>
       <PageTitle>Shifts</PageTitle>
-
-      <PageContainer>
-        {fetchStatus === 'error' && <h3>{message}</h3>}
+      {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+      <ContentContainer>
         {role === 'administrator' && <NewShift employees={employees} />}
         <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} />
-      </PageContainer>
-    </>
+      </ContentContainer>
+    </PageContainer>
   )
 }
 
