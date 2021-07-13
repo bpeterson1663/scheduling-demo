@@ -6,6 +6,7 @@ import AuthenticatedApp from './AuthenticatedApp'
 import UnAuthenticatedApp from './UnAuthenticatedApp'
 import { selectCurrentUser, selectFetchStatus } from './redux/user/user.selector'
 import { fetchAuthStatusStartAsync } from './redux/user/user.actions'
+import { GlobalStyle } from './global.styles'
 
 import { InitialUserState, UserT, FetchStatusT, CurrentUser } from './types'
 interface AppProps {
@@ -23,6 +24,7 @@ const App: React.FC<AppProps> = ({ checkAuth, currentUser, fetchStatus }): JSX.E
 
   return (
     <div>
+      <GlobalStyle />
       {currentUser?._id && fetchStatus === 'success' ? (
         <AuthenticatedApp role={currentUser.role} />
       ) : (

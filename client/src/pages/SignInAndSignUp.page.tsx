@@ -5,7 +5,7 @@ import SignIn from '../components/sign-in/sign-in.component'
 import SignUp from '../components/sign-up/sign-up.component'
 import { MessageT, FetchStatusT, InitialUserState } from '../types'
 import { selectMessage, selectFetchStatus } from '../redux/user/user.selector'
-
+import { SignInSignUpContainer } from './pages.styles'
 interface SignInSignUpT {
   message: MessageT
   fetchStatus: FetchStatusT
@@ -13,11 +13,11 @@ interface SignInSignUpT {
 
 const SignInSignUp: React.FC<SignInSignUpT> = ({ message, fetchStatus }) => {
   return (
-    <div>
+    <SignInSignUpContainer>
       {fetchStatus === 'error' && <h3>{message}</h3>}
       <SignIn />
       <SignUp />
-    </div>
+    </SignInSignUpContainer>
   )
 }
 

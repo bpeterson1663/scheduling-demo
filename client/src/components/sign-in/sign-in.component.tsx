@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { fetchUserLogInStartAsync } from '../../redux/user/user.actions'
 import { SignInT } from '../../types'
-
+import { SignInTitle, SignInContainer, ButtonsBarContainer } from './sign-in.styles'
+import { FormInputContainer, FormInputLabel, GroupContainer } from '../form/form-input.styles'
+import { CustomButtonContainer } from '../form/button.styles'
 interface SignInProps {
   signIn: (payload: SignInT) => void
 }
@@ -16,29 +18,34 @@ const SignIn: React.FC<SignInProps> = ({ signIn }): JSX.Element => {
     signIn({ password, email })
   }
   return (
-    <div>
+    <SignInContainer>
+      <SignInTitle>I already have an account</SignInTitle>
+      <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
+        <GroupContainer>
+          <FormInputLabel htmlFor="email">Email</FormInputLabel>
+          <FormInputContainer
             name="email"
             type="email"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
+        </GroupContainer>
+
+        <GroupContainer>
+          <FormInputLabel htmlFor="password">Password</FormInputLabel>
+          <FormInputContainer
             name="password"
             type="password"
             required
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           />
-        </div>
-        <input type="submit" value="Sign In" />
+        </GroupContainer>
+        <ButtonsBarContainer>
+          <CustomButtonContainer type="submit" value="Sign In" />
+        </ButtonsBarContainer>
       </form>
-    </div>
+    </SignInContainer>
   )
 }
 
