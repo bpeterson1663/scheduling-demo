@@ -42,8 +42,8 @@ const NewShift: React.FC<NewShiftProps> = ({ employees, createShift, fetchStatus
 
   return (
     <NewShiftContainer>
-      {fetchStatus === 'error' && <ErrorMessage>{message}</ErrorMessage>}
-      {fetchStatus === 'success' && <SuccessMessage>{message}</SuccessMessage>}
+      {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+      {fetchStatus === 'success' && message &&  <SuccessMessage>{message}</SuccessMessage>}
       <form onSubmit={handleSubmit}>
         <GroupContainer>
           <FormInputLabel htmlFor="name">Shift Name</FormInputLabel>
