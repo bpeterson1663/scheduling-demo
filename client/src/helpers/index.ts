@@ -19,7 +19,11 @@ export const calculateDuration = (start: number, end: number): string => {
 
 export const findAndReturnName = (employees: UserT[], _id: string): string => {
   const employee = employees.find((employee) => _id === employee._id)
-  return `${employee?.lastName}, ${employee?.firstName}`
+  if (employee) {
+    return `${employee?.lastName}, ${employee?.firstName}`
+  } else {
+    return ''
+  }
 }
 
 export const getMinutes = (hour: string, minute: string): number => parseInt(hour) * 60 + parseInt(minute)
@@ -44,15 +48,17 @@ export const createEndTime = (epoch: number, startTime: string, endTime: string)
 export const formatShifts = (shifts: ShiftT[], employees: UserT[]): DisplayShiftT[] => {
   const formattedShifts: DisplayShiftT[] = []
   shifts.forEach((shift) => {
-    formattedShifts.push({
-      _id: shift._id,
-      shiftName: shift.name,
-      fullName: findAndReturnName(employees, shift.userId),
-      startDate: getStartDateString(shift.startTime),
-      startTime: getTimeString(shift.startTime),
-      endTime: getTimeString(shift.endTime),
-      duration: calculateDuration(shift.startTime, shift.endTime),
-    })
+    if (findAndReturnName(employees, shift.userId)) {
+      formattedShifts.push({
+        _id: shift._id,
+        shiftName: shift.name,
+        fullName: findAndReturnName(employees, shift.userId),
+        startDate: getStartDateString(shift.startTime),
+        startTime: getTimeString(shift.startTime),
+        endTime: getTimeString(shift.endTime),
+        duration: calculateDuration(shift.startTime, shift.endTime),
+      })
+    }
   })
   return formattedShifts
 }
