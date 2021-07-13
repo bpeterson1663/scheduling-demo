@@ -28,7 +28,16 @@ interface ShiftsProps {
   role: RoleT | null
 }
 
-const Shifts: React.FC<ShiftsProps> = ({ deleteShift, role, getEmployees, getShifts, employees, fetchStatus, message, shifts }) => {
+const Shifts: React.FC<ShiftsProps> = ({
+  deleteShift,
+  role,
+  getEmployees,
+  getShifts,
+  employees,
+  fetchStatus,
+  message,
+  shifts,
+}) => {
   useEffect(() => {
     getEmployees(role)
     getShifts()
@@ -37,7 +46,7 @@ const Shifts: React.FC<ShiftsProps> = ({ deleteShift, role, getEmployees, getShi
   const formattedShifts = formatShifts(shifts, employees)
 
   const handleShiftDelete = (id: string) => {
-    if(confirm("Are you sure you want to delete this shift?") === true){
+    if (confirm('Are you sure you want to delete this shift?') === true) {
       deleteShift(id)
     }
   }
@@ -46,7 +55,7 @@ const Shifts: React.FC<ShiftsProps> = ({ deleteShift, role, getEmployees, getShi
       <h1>Shifts</h1>
       {fetchStatus === 'error' && <h3>{message}</h3>}
       {role === 'administrator' && <NewShift employees={employees} />}
-      <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete}/>
+      <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} />
     </div>
   )
 }
@@ -76,7 +85,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getEmployees: (role: RoleT | null) => dispatch<any>(fetchAllEmployeesStartAsync(role)),
   getShifts: () => dispatch<any>(fetchAllShiftsStartSync()),
-  deleteShift: (id: string) => dispatch<any>(fetchShiftDeleteStart(id))
+  deleteShift: (id: string) => dispatch<any>(fetchShiftDeleteStart(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shifts)

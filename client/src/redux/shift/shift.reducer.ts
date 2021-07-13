@@ -40,7 +40,7 @@ const shiftReducer = (state = INITIAL_STATE, action: AnyAction) => {
       return {
         ...state,
         fetchStatus: 'success',
-        shifts: state.shifts.filter(shift => shift._id !== action.payload)
+        shifts: state.shifts.filter((shift) => shift._id !== action.payload),
       }
     }
     default:

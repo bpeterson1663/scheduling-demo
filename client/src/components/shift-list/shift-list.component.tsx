@@ -30,7 +30,9 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element 
               <td>{shift.startTime}</td>
               <td>{shift.endTime}</td>
               <td>{shift.duration}</td>
-              <td><input type="button" value="Delete" onClick={() => handleDelete(shift._id)} /></td>
+              <td>
+                <input type="button" value="Delete" onClick={() => handleDelete(shift._id)} />
+              </td>
             </tr>
           ))}
         </tbody>
