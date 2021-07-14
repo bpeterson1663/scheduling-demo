@@ -49,7 +49,7 @@ const Shifts: React.FC<ShiftsProps> = ({
     getEmployees(role)
     getShifts()
   }, [getEmployees])
-  if (fetchStatus === 'loading') return <Spinner />
+
   shifts.sort((a, b) => a.startTime - b.startTime)
   const formattedShifts = formatShifts(shifts, employees)
 
@@ -61,6 +61,7 @@ const Shifts: React.FC<ShiftsProps> = ({
   return (
     <PageContainer>
       <PageTitle>Shifts</PageTitle>
+      {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
       <ContentContainer>
         {role === 'administrator' && <NewShift employees={employees} />}

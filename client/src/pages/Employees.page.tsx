@@ -25,8 +25,6 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
     getEmployees(role)
   }, [getEmployees])
 
-  if (fetchStatus === 'loading') return <Spinner />
-
   const handleEmployeeDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this employee?') === true) {
       deleteEmployee(id)
@@ -35,6 +33,7 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
   return (
     <PageContainer>
       <PageTitle>Employees</PageTitle>
+      {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
       <ContentContainer>
         <NewEmployee />

@@ -38,10 +38,10 @@ const NewShift: React.FC<NewShiftProps> = ({ employees, createShift, fetchStatus
       endTime: epochEndTime,
     })
   }
-  if (fetchStatus === 'loading') return <Spinner />
 
   return (
     <NewShiftContainer>
+      {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
       {fetchStatus === 'success' && message && <SuccessMessage>{message}</SuccessMessage>}
       <form onSubmit={handleSubmit}>

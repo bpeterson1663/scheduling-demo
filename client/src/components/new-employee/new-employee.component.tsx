@@ -39,11 +39,11 @@ const NewEmployee: React.FC<NewEmployeeT> = ({ createEmployee, fetchStatus, mess
       role,
     })
   }
-  if (fetchStatus === 'loading') return <Spinner />
   return (
     <NewEmployeeContainer>
-      {fetchStatus === 'error' && <ErrorMessage>{message}</ErrorMessage>}
-      {fetchStatus === 'success' && <SuccessMessage>{message}</SuccessMessage>}
+      {fetchStatus === 'loading' && <Spinner />}
+      {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+      {fetchStatus === 'success' && message && <SuccessMessage>{message}</SuccessMessage>}
       <form onSubmit={handleSubmit}>
         <GroupContainer>
           <FormInputLabel htmlFor="firstName">First Name</FormInputLabel>
