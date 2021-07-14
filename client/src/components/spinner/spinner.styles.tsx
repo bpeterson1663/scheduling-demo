@@ -22,13 +22,13 @@ export const SpinnerContainer = styled.div`
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
   @keyframes spin {
-    to {
-      -webkit-transform: rotate(360deg);
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
     }
-  }
-  @-webkit-keyframes spin {
-    to {
+    100% {
       -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
     }
   }
 `
