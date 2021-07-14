@@ -42,8 +42,8 @@ const getAllShifts = (req, res) => {
   } else if (req.user.role === 'administrator' && userId) {
     conditions.push({ userId: userId })
   }
-  if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
-  if (end) conditions.push({ endTime: { $gte: parseInt(end) } })
+  if (start) conditions.push({ startTime: { $gte: parseInt(start) } })
+  if (end) conditions.push({ startTime: { $lte: parseInt(end) } })
 
   Shift.find({ $and: conditions })
     .sort({ startTime: 1 })
