@@ -3,13 +3,16 @@ Deployed to https://when-i-work-challenge.herokuapp.com/
 
 ## Purpose
 The purpose of this app is to create a basic scheduling application where a user can create, edit, view and delete shifts. This project was created using the MERN stack. All API code is located under the `server` directory. All UI code is located in the `client` directory which has a spearate `package.json` file to manage its own dependencies
-
+---
 ## Overview
 There are two roles for users; Administrator or Employee.
 When a user signs up, they will enter a unique business name and will automatically become an Administrator. The Administrator can then create more users, both Employees and Administrators, that will automatically be associated with the business name the initial user entered. The created Employees and Administrators will then be able to log in with the password and email entered. 
 
 An Aministrator can see all shifts for all users while an Employee can only see their own shifts. Only an Administrator can create, edit or delete a shift or a user. An Employee will not have the ability to edit or delete their shifts.
-
+---
+## API Documentation
+[CLICK HERE FOR API DOCUMENTATION](./server/README.md)
+---
 ## Running Locally
 ### Prerequisites 
 1. Node Version 14 or higher
@@ -59,5 +62,3 @@ Serves up the UI code using webpack at localhost:3000
 
 Create a production build using webpack that is outputed in the `dist` folder
 
-## API Documentation
-[CLICK HERE FOR API DOCUMENTATION](./server/README.md)
