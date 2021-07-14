@@ -6,6 +6,7 @@ const Shift = new Schema({
   startTime: { type: Number, required: true },
   endTime: { type: Number, required: true },
   userId: { type: String, required: true },
+  businessName: { type: String, required: true, immutable: true }
 })
 
 module.exports = mongoose.model('shift', Shift)

@@ -84,10 +84,11 @@ const createUser = (req, res) => {
   user
     .save()
     .then(() => {
+      const { _id, email, firstName, lastName, businessName, role } = user
       return res.status(201).json({
         success: true,
         id: user._id,
-        user: user,
+        user: { _id, email, firstName, lastName, businessName, role },
       })
     })
     .catch((error) => {
@@ -122,8 +123,7 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
-  if (req.user.role === 'employee' && req.params.id !== req.user._id)
-    return generateErrorResponse(res, 403, userUnathorized)
+  if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
 
   User.updateOne({ _id: req.params.id }, req.body, (error, user) => {
     if (error) generateErrorResponse(res, 400, error.message)

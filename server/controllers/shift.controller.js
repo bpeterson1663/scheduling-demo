@@ -5,7 +5,7 @@ const { requestBodyInvalid, shiftOvelapsError } = require('../../i18n')
 const createShift = (req, res) => {
   if (req.user.role !== 'administrator') return generateErrorResponse(res, 403, userUnathorized)
   if (!req.body) return generateErrorResponse(res, 400, requestBodyInvalid)
-
+  const { businessName } = req.user
   const { startTime, endTime, userId } = req.body
   if (!startTime || !endTime || !userId) return generateErrorResponse(res, 400, requestBodyInvalid)
 
@@ -17,7 +17,7 @@ const createShift = (req, res) => {
     if (count) {
       return generateErrorResponse(res, 400, shiftOvelapsError)
     } else {
-      const shift = new Shift(req.body)
+      const shift = new Shift({...req.body, businessName})
 
       shift
         .save()
@@ -36,7 +36,7 @@ const createShift = (req, res) => {
 
 const getAllShifts = (req, res) => {
   const { start, end, userId } = req.query
-  const conditions = []
+  const conditions = [{ businessName: req.user.businessName }]
   if (req.user.role === 'employee') {
     conditions.push({ userId: req.user._id })
   } else if (req.user.role === 'administrator' && userId) {
@@ -44,8 +44,8 @@ const getAllShifts = (req, res) => {
   }
   if (start) conditions.push({ startTime: { $lte: parseInt(start) } })
   if (end) conditions.push({ endTime: { $gte: parseInt(end) } })
-  const searchCondition = conditions.length > 0 ? { $and: conditions } : {}
-  Shift.find(searchCondition)
+
+  Shift.find({ $and: conditions })
     .sort({ startTime: 1 })
     .exec((error, shifts) => {
       if (error) return generateErrorResponse(res, 400, error.message)
@@ -75,6 +75,7 @@ const updateShift = (req, res) => {
 
         return res.status(200).json({
           success: true,
+          _id: shift._id,
         })
       })
     }
