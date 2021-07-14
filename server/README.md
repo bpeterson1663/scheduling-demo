@@ -1,5 +1,5 @@
 # API Endpoints
-
+If you are using VSCode, you can install the REST Client extension and use the `requests.rest` file to make api calls for testing
 ## SHIFT ENDPOINTS
 ---
 ## POST /api/shift
@@ -27,7 +27,7 @@ Must be an administrator role and authenticated
  All optional
  - userId: Id of user you want to return shifts for
  - start: Epoch value. Shifts will be returned that start on or after 
- - end: Epoch value. Shifts will be returned that end before or after
+ - end: Epoch value. Shifts will be returned that start on or before
 ### Restrictions
 Must be an authenticated user. If administrator role, all shifts will be returned based on the businessName of the authenticated user. If employee role, only shifts belonging to that user will be rturned
 ### Response Body
@@ -56,7 +56,7 @@ Must be authenticated
 ```
 ## PUT /api/shift/:SHIFT_ID
 ### Restrictions
-Must be and administrator role and authenticated
+Must be an administrator role and authenticated
 ### Request Body
 Only start time and end time are editable
 ```
