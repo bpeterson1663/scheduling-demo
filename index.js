@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 4000
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:3000', // <-- location of the react app for development
+    origin: ['http://localhost:3000', 'http://when-i-work-challenge.herokuapp.com'], // <-- location of the react app for development
     credentials: true,
   }),
 )
