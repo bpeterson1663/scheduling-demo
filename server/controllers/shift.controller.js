@@ -17,7 +17,7 @@ const createShift = (req, res) => {
     if (count) {
       return generateErrorResponse(res, 400, shiftOvelapsError)
     } else {
-      const shift = new Shift({...req.body, businessName})
+      const shift = new Shift({ ...req.body, businessName })
 
       shift
         .save()
