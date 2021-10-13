@@ -1,6 +1,6 @@
 import React from 'react'
 import { DisplayShiftT } from '../../types'
-import { DeleteButtonContainer } from '../form/button.styles'
+import { ActionButtonContainer } from '../form/button.styles'
 import { StyledTable, TableContainer } from '../table/table.styles'
 interface ShiftListT {
   shifts: DisplayShiftT[]
@@ -32,7 +32,7 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element 
               <td>{shift.endTime}</td>
               <td>{shift.duration}</td>
               <td>
-                <DeleteButtonContainer type="button" value="Delete" onClick={() => handleDelete(shift._id)} />
+                <ActionButtonContainer type="button" value="Delete" onClick={() => handleDelete(shift._id)} />
               </td>
             </tr>
           ))}

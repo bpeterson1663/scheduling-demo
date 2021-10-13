@@ -2,7 +2,7 @@ import React from 'react'
 import { UserT } from '../../types'
 import { ROLES } from '../../constants'
 import { StyledTable, TableContainer } from '../table/table.styles'
-import { DeleteButtonContainer } from '../form/button.styles'
+import { ActionButtonContainer } from '../form/button.styles'
 
 interface EmployeeListT {
   employees: UserT[]
@@ -30,7 +30,7 @@ const EmployeeList: React.FC<EmployeeListT> = ({ employees, handleDelete }): JSX
               <td>{ROLES.find((role) => role.value === employee.role)?.name}</td>
               <td>{employee.email}</td>
               <td>
-                <DeleteButtonContainer type="button" value="Delete" onClick={() => handleDelete(employee._id)} />
+                <ActionButtonContainer type="button" value="Delete" onClick={() => handleDelete(employee._id)} />
               </td>
             </tr>
           ))}

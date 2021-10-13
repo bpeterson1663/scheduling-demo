@@ -17,7 +17,7 @@ export const CustomButtonContainer = styled.input`
   justify-content: center;
 `
 
-export const DeleteButtonContainer = styled.input`
+export const ActionButtonContainer = styled.input`
   width: auto;
   letter-spacing: 0.5px;
   line-height: 20px;
