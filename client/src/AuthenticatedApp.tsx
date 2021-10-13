@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import Header from './components/header/header.component'
 import Shifts from './pages/Shifts.page'
 import Employees from './pages/Employees.page'
+import EditShift from './pages/EditShift.page'
 import { RoleT } from './types'
 
 interface AuthenticatedAppProps {
@@ -17,6 +18,7 @@ const AuthenticatedApp: React.FC<AuthenticatedAppProps> = ({ role }) => {
       <Switch>
         <Route exact path="/" component={Shifts} />
         <Route exact path="/shifts" component={Shifts} />
+        <Route exact path="/shift/:id" component={EditShift} />
         <Route
           exact
           path="/employees"
