@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect'
 import NewShift from '../components/new-shift/new-shift.component'
 import ShiftList from '../components/shift-list/shift-list.component'
@@ -45,6 +46,7 @@ const Shifts: React.FC<ShiftsProps> = ({
   message,
   shifts,
 }) => {
+  const history = useHistory()
   useEffect(() => {
     getEmployees(role)
     getShifts()
@@ -58,6 +60,9 @@ const Shifts: React.FC<ShiftsProps> = ({
       deleteShift(id)
     }
   }
+
+  const handleEditDelete = (id: string) => history.push(`/shift/${id}`)
+
   return (
     <PageContainer>
       <PageTitle>Shifts</PageTitle>
@@ -65,7 +70,7 @@ const Shifts: React.FC<ShiftsProps> = ({
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
       <ContentContainer>
         {role === 'administrator' && <NewShift employees={employees} />}
-        <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} />
+        <ShiftList shifts={formattedShifts} handleDelete={handleShiftDelete} handleEdit={handleEditDelete} />
       </ContentContainer>
     </PageContainer>
   )

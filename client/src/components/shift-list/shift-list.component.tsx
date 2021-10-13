@@ -5,9 +5,10 @@ import { StyledTable, TableContainer } from '../table/table.styles'
 interface ShiftListT {
   shifts: DisplayShiftT[]
   handleDelete: (id: string) => void
+  handleEdit: (id: string) => void
 }
 
-const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element => {
+const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete, handleEdit }): JSX.Element => {
   return (
     <TableContainer>
       <StyledTable>
@@ -20,6 +21,7 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element 
             <th>End Time</th>
             <th>Duration (hours)</th>
             <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +35,9 @@ const ShiftList: React.FC<ShiftListT> = ({ shifts, handleDelete }): JSX.Element 
               <td>{shift.duration}</td>
               <td>
                 <ActionButtonContainer type="button" value="Delete" onClick={() => handleDelete(shift._id)} />
+              </td>
+              <td>
+                <ActionButtonContainer type="button" value="Edit" onClick={() => handleEdit(shift._id)} />
               </td>
             </tr>
           ))}
