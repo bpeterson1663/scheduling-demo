@@ -42,7 +42,6 @@ const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, fetchStatus, mes
       <PageTitle>Edit Shift</PageTitle>
       {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
-    
     </PageContainer>
   )
 }
