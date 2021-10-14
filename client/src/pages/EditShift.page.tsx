@@ -16,6 +16,8 @@ import {
   NewShiftT,
 } from '../types'
 import { selectRole } from '../redux/user/user.selector'
+import Spinner from '../components/spinner/spinner.component'
+import { ErrorMessage } from '../components/message/message.styles'
 
 interface ParamTypes {
   id: string
@@ -24,9 +26,11 @@ interface ParamTypes {
 interface EditShiftProps {
   getShift: (id: string) => void
   shift: NewShiftT | null
+  fetchStatus: FetchStatusT
+  message: MessageT
 }
 
-const EditShift: React.FC<EditShiftProps> = ({ getShift, shift }) => {
+const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, fetchStatus, message }) => {
   const { id } = useParams<ParamTypes>()
 
   useEffect(() => {
@@ -36,6 +40,9 @@ const EditShift: React.FC<EditShiftProps> = ({ getShift, shift }) => {
   return (
     <PageContainer>
       <PageTitle>Edit Shift</PageTitle>
+      {fetchStatus === 'loading' && <Spinner />}
+      {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+    
     </PageContainer>
   )
 }
