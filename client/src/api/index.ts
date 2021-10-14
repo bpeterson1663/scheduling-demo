@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { SignInT, SignUpT, EmployeeT, NewShiftT } from '../types'
 
-const baseURL = 'https://when-i-work-challenge.herokuapp.com/api'
+const baseURL = 'http://localhost:4000/api'
 
 const api = axios.create({
   withCredentials: true,
@@ -20,3 +20,4 @@ export const deleteEmployee = (id: string): Promise<AxiosResponse> => api.delete
 export const createShift = (payload: NewShiftT): Promise<AxiosResponse> => api.post('/shift', payload)
 export const getAllShifts = (): Promise<AxiosResponse> => api.get('/shifts')
 export const deleteShift = (id: string): Promise<AxiosResponse> => api.delete(`/shift/${id}`)
+export const getShiftById = (id: string): Promise<AxiosResponse> => api.get(`/shift/${id}`)
