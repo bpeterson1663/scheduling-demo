@@ -8,3 +8,5 @@ export const selectShifts = createSelector([selectShiftReducer], (shift) => shif
 export const selectFetchStatus = createSelector([selectShiftReducer], (shift) => shift.fetchStatus)
 
 export const selectMessage = createSelector([selectShiftReducer], (shift) => shift.message)
+
+export const selectShift = createSelector([selectShiftReducer], (shift) => shift.shift)

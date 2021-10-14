@@ -4,6 +4,7 @@ import { InitialShiftState } from '../../types'
 
 const INITIAL_STATE: InitialShiftState = {
   shifts: [],
+  shift: null,
   message: null,
   fetchStatus: 'idle',
 }
@@ -21,6 +22,12 @@ const shiftReducer = (state = INITIAL_STATE, action: AnyAction) => {
         fetchStatus: 'success',
         shifts: [...state.shifts, action.payload],
         message: 'Shift Created Successfully',
+      }
+    case ShiftActionTypes.FETCH_SHIFT_SUCCESS:
+      return {
+        ...state,
+        fetchStatus: 'success',
+        shift: action.payload,
       }
     case ShiftActionTypes.FETCH_SHIFT_FAILURE:
       return {
