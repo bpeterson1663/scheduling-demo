@@ -12,6 +12,10 @@ export const getStartDateString = (epoch: number): string => dayJs(epoch).format
 
 export const getTimeString = (epoch: number): string => dayJs(epoch).format('LT')
 
+export const getHourMinute = (epoch: number): string => dayJs(epoch).format('HH:mm')
+
+export const getDateString = (epoch: number): string => dayJs(epoch).format('YYYY-MM-DD')
+
 export const calculateDuration = (start: number, end: number): string => {
   const hours = (end - start) / 60 / 60 / 1000
   return hours.toFixed(2)
