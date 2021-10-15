@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
 import { useParams } from 'react-router-dom'
-import { PageContainer, PageTitle } from './pages.styles'
+import { PageContainer, ContentContainer, PageTitle } from './pages.styles'
 import { fetchShiftStartAsync } from '../redux/shift/shift.actions'
 import { selectFetchStatus, selectMessage, selectShift } from '../redux/shift/shift.selector'
 import {
@@ -14,11 +14,13 @@ import {
   InitialUserState,
   RoleT,
   NewShiftT,
+  UserT
 } from '../types'
 import { selectRole } from '../redux/user/user.selector'
 import Spinner from '../components/spinner/spinner.component'
 import { ErrorMessage } from '../components/message/message.styles'
-
+import { selectEmployees } from '../redux/employee/employee.selector'
+import EditShiftForm from '../components/edit-shift/edit-shift.component'
 interface ParamTypes {
   id: string
 }
@@ -28,9 +30,10 @@ interface EditShiftProps {
   shift: NewShiftT | null
   fetchStatus: FetchStatusT
   message: MessageT
+  employees: UserT[]
 }
 
-const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, fetchStatus, message }) => {
+const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, employees, fetchStatus, message }) => {
   const { id } = useParams<ParamTypes>()
 
   useEffect(() => {
@@ -42,6 +45,9 @@ const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, fetchStatus, mes
       <PageTitle>Edit Shift</PageTitle>
       {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
+      <ContentContainer>
+        {shift && <EditShiftForm shift={shift} employees={employees}/>}
+      </ContentContainer>
     </PageContainer>
   )
 }
@@ -53,6 +59,7 @@ interface State {
 }
 
 interface DesiredSelection {
+  employees: UserT[]
   fetchStatus: FetchStatusT
   message: MessageT
   role: RoleT | undefined
@@ -64,6 +71,7 @@ const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
   fetchStatus: selectFetchStatus,
   message: selectMessage,
   role: selectRole,
+  employees: selectEmployees
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
