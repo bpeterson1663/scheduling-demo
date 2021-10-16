@@ -63,7 +63,7 @@ export interface DisplayShiftT {
 
 export interface InitialShiftState {
   shifts: ShiftT[]
-  shift: NewShiftT | null
+  shift: ShiftT | null
   fetchStatus: FetchStatusT
   message: MessageT
 }

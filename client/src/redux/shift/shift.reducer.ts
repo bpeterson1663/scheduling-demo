@@ -23,6 +23,13 @@ const shiftReducer = (state = INITIAL_STATE, action: AnyAction) => {
         shifts: [...state.shifts, action.payload],
         message: 'Shift Created Successfully',
       }
+    case ShiftActionTypes.FETCH_SHIFT_UPDATE_SUCCESS:
+      return {
+        ...state,
+        fetchStatus: 'success',
+        id: action.payload,
+        message: 'Shift Updated Successfully',
+      }
     case ShiftActionTypes.FETCH_SHIFT_SUCCESS:
       return {
         ...state,

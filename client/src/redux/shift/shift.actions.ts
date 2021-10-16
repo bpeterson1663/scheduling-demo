@@ -1,14 +1,19 @@
 import { Dispatch } from 'redux'
 import ShiftActionTypes from './shift.types'
 import { NewShiftT, ShiftT, MessageT } from '../../types'
-import { createShift, getAllShifts, deleteShift, getShiftById } from '../../api'
+import { createShift, getAllShifts, deleteShift, getShiftById, updateShift } from '../../api'
 
 const fetchShiftStart = () => ({
   type: ShiftActionTypes.FETCH_SHIFT_START,
 })
 
-const fetchCreateSuccess = (shift: ShiftT) => ({
+const fetchCreateSuccess = (id: string) => ({
   type: ShiftActionTypes.FETCH_SHIFT_CREATE_SUCCESS,
+  payload: id,
+})
+
+const fetchUpdateSuccess = (shift: ShiftT) => ({
+  type: ShiftActionTypes.FETCH_SHIFT_UPDATE_SUCCESS,
   payload: shift,
 })
 
@@ -38,6 +43,21 @@ export const fetchShiftStartAsync = (id: string) => async (dispatch: Dispatch) =
     const response = await getShiftById(id)
     const { shift } = response.data
     dispatch(fetchShiftSuccess(shift))
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchShiftFailure(error))
+  }
+}
+
+export const fetchShiftUpdateStartAsync = (id: string, payload: ShiftT) => async (dispatch: Dispatch) => {
+  dispatch(fetchShiftStart())
+  try {
+    const response = await updateShift(id, payload)
+    const { _id } = response.data
+    dispatch(fetchUpdateSuccess(_id))
   } catch (err) {
     const {
       response: { data },

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { SignInT, SignUpT, EmployeeT, NewShiftT } from '../types'
+import { SignInT, SignUpT, EmployeeT, NewShiftT, ShiftT } from '../types'
 
 const baseURL = 'http://localhost:4000/api'
 
@@ -21,3 +21,4 @@ export const createShift = (payload: NewShiftT): Promise<AxiosResponse> => api.p
 export const getAllShifts = (): Promise<AxiosResponse> => api.get('/shifts')
 export const deleteShift = (id: string): Promise<AxiosResponse> => api.delete(`/shift/${id}`)
 export const getShiftById = (id: string): Promise<AxiosResponse> => api.get(`/shift/${id}`)
+export const updateShift = (id: string, payload: ShiftT): Promise<AxiosResponse> => api.put(`/shift/${id}`, payload)
