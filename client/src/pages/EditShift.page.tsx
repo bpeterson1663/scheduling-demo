@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { PageContainer, ContentContainer, PageTitle } from './pages.styles'
 import { fetchShiftStartAsync, fetchShiftUpdateStartAsync } from '../redux/shift/shift.actions'
 import { selectFetchStatus, selectMessage, selectShift } from '../redux/shift/shift.selector'
@@ -36,6 +36,7 @@ interface EditShiftProps {
 
 const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, employees, fetchStatus, message, updateShift }) => {
   const { id } = useParams<ParamTypes>()
+  const history = useHistory()
 
   useEffect(() => {
     getShift(id)
@@ -45,6 +46,7 @@ const EditShift: React.FC<EditShiftProps> = ({ getShift, shift, employees, fetch
   }
   return (
     <PageContainer>
+      <span onClick={() => history.goBack()}>Back</span>
       <PageTitle>Edit Shift</PageTitle>
       {fetchStatus === 'loading' && <Spinner />}
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
