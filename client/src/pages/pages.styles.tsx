@@ -16,3 +16,8 @@ export const PageTitle = styled.h1`
   justify-content: center;
   display: flex;
 `
+
+export const BackButton = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+`
