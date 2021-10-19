@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
 import NewEmployee from '../components/new-employee/new-employee.component'
@@ -21,6 +22,8 @@ interface EmployeesT {
   role: RoleT | undefined
 }
 const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, deleteEmployee, fetchStatus, message }) => {
+  const history = useHistory()
+
   useEffect(() => {
     getEmployees(role)
   }, [getEmployees])
@@ -30,6 +33,9 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
       deleteEmployee(id)
     }
   }
+
+  const handleEditEmployee = (id: string) => history.push(`/employee/${id}`)
+
   return (
     <PageContainer>
       <PageTitle>Employees</PageTitle>
@@ -37,7 +43,7 @@ const Employees: React.FC<EmployeesT> = ({ role, employees, getEmployees, delete
       {fetchStatus === 'error' && message && <ErrorMessage>{message}</ErrorMessage>}
       <ContentContainer>
         <NewEmployee />
-        <EmployeeList employees={employees} handleDelete={handleEmployeeDelete} />
+        <EmployeeList employees={employees} handleDelete={handleEmployeeDelete} handleEdit={handleEditEmployee} />
       </ContentContainer>
     </PageContainer>
   )

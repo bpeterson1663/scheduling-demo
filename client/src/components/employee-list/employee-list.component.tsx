@@ -7,9 +7,10 @@ import { ActionButtonContainer } from '../form/button.styles'
 interface EmployeeListT {
   employees: UserT[]
   handleDelete: (id: string) => void
+  handleEdit: (id: string) => void
 }
 
-const EmployeeList: React.FC<EmployeeListT> = ({ employees, handleDelete }): JSX.Element => {
+const EmployeeList: React.FC<EmployeeListT> = ({ employees, handleDelete, handleEdit }): JSX.Element => {
   return (
     <TableContainer>
       <StyledTable>
@@ -20,6 +21,7 @@ const EmployeeList: React.FC<EmployeeListT> = ({ employees, handleDelete }): JSX
             <th>Role</th>
             <th>Email</th>
             <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +33,9 @@ const EmployeeList: React.FC<EmployeeListT> = ({ employees, handleDelete }): JSX
               <td>{employee.email}</td>
               <td>
                 <ActionButtonContainer type="button" value="Delete" onClick={() => handleDelete(employee._id)} />
+              </td>
+              <td>
+                <ActionButtonContainer type="button" value="Edit" onClick={() => handleEdit(employee._id)} />
               </td>
             </tr>
           ))}
