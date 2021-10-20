@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import EmployeeActionTypes from './employee.types'
 import { EmployeeT, UserT, MessageT, RoleT } from '../../types'
-import { createEmployee, getAllEmployees, deleteEmployee } from '../../api'
+import { createEmployee, getAllEmployees, deleteEmployee, getEmployeeById } from '../../api'
 const fetchEmployeeStart = () => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_START,
 })
@@ -10,11 +10,29 @@ const fetchCreateSuccess = (employee: UserT) => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_CREATE_SUCCESS,
   payload: employee,
 })
-
+const fetchEmployeeSuccess = (user: UserT) => ({
+  type: EmployeeActionTypes.FETCH_EMPLOYEE_SUCCESS,
+  payload: user,
+})
 const fetchEmployeeFailure = (errorMessage: MessageT) => ({
   type: EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE,
   payload: errorMessage,
 })
+
+export const fetchEmployeeStartAsync = (id: string) => async (dispatch: Dispatch) => {
+  dispatch(fetchEmployeeStart())
+  try {
+    const response = await getEmployeeById(id)
+    const { user } = response.data
+    dispatch(fetchEmployeeSuccess(user))
+  } catch (err) {
+    const {
+      response: { data },
+    } = err
+    const { error } = data
+    dispatch(fetchEmployeeFailure(error))
+  }
+}
 
 export const fetchEmployeeCreateStartAsync = (payload: EmployeeT) => async (dispatch: Dispatch) => {
   dispatch(fetchEmployeeStart())

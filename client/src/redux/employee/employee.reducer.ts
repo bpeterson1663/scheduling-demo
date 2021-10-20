@@ -4,6 +4,7 @@ import { InitialEmployeeState } from '../../types'
 
 const INITIAL_STATE: InitialEmployeeState = {
   employees: [],
+  employee: null,
   message: null,
   fetchStatus: 'idle',
 }
@@ -21,6 +22,12 @@ const employeeReducer = (state = INITIAL_STATE, action: AnyAction) => {
         fetchStatus: 'success',
         employees: [...state.employees, action.payload],
         message: 'Emlpoyee Created Succesfully',
+      }
+    case EmployeeActionTypes.FETCH_EMPLOYEE_SUCCESS:
+      return {
+        ...state,
+        fetchStatus: 'success',
+        employee: action.payload,
       }
     case EmployeeActionTypes.FETCH_EMPLOYEE_FAILURE:
       return {

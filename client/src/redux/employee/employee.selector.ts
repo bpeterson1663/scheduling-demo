@@ -8,3 +8,5 @@ export const selectEmployees = createSelector([selectEmployeeReducer], (employee
 export const selectFetchStatus = createSelector([selectEmployeeReducer], (employee) => employee.fetchStatus)
 
 export const selectMessage = createSelector([selectEmployeeReducer], (employee) => employee.message)
+
+export const selectEmployee = createSelector([selectEmployeeReducer], (employee) => employee.employee)
