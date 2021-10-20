@@ -36,6 +36,7 @@ export interface InitialUserState {
 
 export interface InitialEmployeeState {
   employees: UserT[]
+  employee: null
   fetchStatus: FetchStatusT
   message: MessageT
 }

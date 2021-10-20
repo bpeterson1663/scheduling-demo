@@ -16,6 +16,7 @@ export const checkAuth = (): Promise<AxiosResponse> => api.get('/authorized')
 export const createEmployee = (payload: EmployeeT): Promise<AxiosResponse> => api.post('/user', payload)
 export const getAllEmployees = (): Promise<AxiosResponse> => api.get('/users')
 export const deleteEmployee = (id: string): Promise<AxiosResponse> => api.delete(`/user/${id}`)
+export const getEmployeeById = (id: string): Promise<AxiosResponse> => api.get(`/user/${id}`)
 
 export const createShift = (payload: NewShiftT): Promise<AxiosResponse> => api.post('/shift', payload)
 export const getAllShifts = (): Promise<AxiosResponse> => api.get('/shifts')
