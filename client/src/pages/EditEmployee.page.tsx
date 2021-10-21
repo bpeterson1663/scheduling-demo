@@ -3,28 +3,28 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { PageContainer, PageTitle, ContentContainer, BackButton } from './pages.styles'
-import { UserT, InitialEmployeeState, InitialShiftState, InitialUserState, FetchStatusT, MessageT,  } from '../types'
+import { UserT, InitialEmployeeState, InitialShiftState, InitialUserState, FetchStatusT, MessageT } from '../types'
 import { createStructuredSelector } from 'reselect'
 import { selectEmployee, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
 import { fetchEmployeeStartAsync } from '../redux/employee/employee.actions'
 
 interface ParamTypes {
-    id: string
+  id: string
 }
 
 interface EditEmployeeProps {
-    getEmployee: (id: string) => void
-    employee: UserT | null
+  getEmployee: (id: string) => void
+  employee: UserT | null
 }
 
 export const EditEmployee: React.FC<EditEmployeeProps> = ({ getEmployee, employee }) => {
-    const { id } = useParams<ParamTypes>()
-    const history = useHistory()
+  const { id } = useParams<ParamTypes>()
+  const history = useHistory()
 
   useEffect(() => {
     getEmployee(id)
   }, [])
-  console.log("employee: ", employee)
+  console.log('employee: ', employee)
 
   return (
     <PageContainer>
@@ -37,16 +37,16 @@ export const EditEmployee: React.FC<EditEmployeeProps> = ({ getEmployee, employe
 }
 
 interface State {
-    employeeReducer: InitialEmployeeState
-    shiftReducer: InitialShiftState
-    userReducer: InitialUserState
-  }
-  
-  interface DesiredSelection {
-    fetchStatus: FetchStatusT
-    message: MessageT
-    employee: UserT | null
-  }
+  employeeReducer: InitialEmployeeState
+  shiftReducer: InitialShiftState
+  userReducer: InitialUserState
+}
+
+interface DesiredSelection {
+  fetchStatus: FetchStatusT
+  message: MessageT
+  employee: UserT | null
+}
 
 const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
   employee: selectEmployee,
@@ -55,7 +55,7 @@ const mapStateToProps = createStructuredSelector<State, DesiredSelection>({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getEmployee: (id: string) => dispatch<any>(fetchEmployeeStartAsync(id))
+  getEmployee: (id: string) => dispatch<any>(fetchEmployeeStartAsync(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEmployee)
