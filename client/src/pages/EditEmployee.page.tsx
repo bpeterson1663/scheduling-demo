@@ -7,7 +7,7 @@ import { UserT, InitialEmployeeState, InitialShiftState, InitialUserState, Fetch
 import { createStructuredSelector } from 'reselect'
 import { selectEmployee, selectFetchStatus, selectMessage } from '../redux/employee/employee.selector'
 import { fetchEmployeeStartAsync } from '../redux/employee/employee.actions'
-
+import EditEmployeeForm from '../components/edit-employee/edit-employee.component'
 interface ParamTypes {
   id: string
 }
@@ -31,7 +31,9 @@ export const EditEmployee: React.FC<EditEmployeeProps> = ({ getEmployee, employe
       <BackButton onClick={() => history.goBack()}>Back</BackButton>
       <PageTitle>Edit Employee</PageTitle>
 
-      <ContentContainer></ContentContainer>
+      <ContentContainer>
+        {employee && <EditEmployeeForm employee={employee} onSubmit={() => console.log('submitted')} />}
+      </ContentContainer>
     </PageContainer>
   )
 }
